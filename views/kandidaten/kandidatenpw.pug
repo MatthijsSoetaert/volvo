@@ -1,0 +1,90 @@
+extends ../layout
+
+block extracss
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Kandidaten per week
+  form(method="post" action="/kandidaten/kandidatenpw" autocomplete="off")
+    .row
+      .col-lg-3
+        .form-group
+          label.control-label.checkbox-inline(for="week") Van:
+          input.form-control#week(name="week" type="text" placeholder="MM/DD/YYYY")
+      .col-lg-3.mt-2
+        br
+        input.btn.btn-outline-primary(type="submit" value="Submit") 
+      .col-lg-3.mt-2
+        br
+        label.control-label.checkbox-inline(for="gecertifceerd") Enkel gecertificeerd:
+        input.ml-4(name="gecertifceerd" type="checkbox" data-toggle="toggle" data-on="Ja" data-off="Nee" onchange="toggleCards()")
+      .col-lg-3.mt-2
+        br
+        .text-right
+          a.btn.btn-outline-primary(href="/kandidaten/add") Voeg kandidaat toe
+  .top-buffer
+  .row
+    each item in kandidaten
+      if item.gecertificeerd
+        .col-lg-2.mb-3
+          .card(id=item._id onclick="clicked(this)" )
+            img.card-img-top(src='/images/profilepictures/' + item._id + "." +item.imgext alt="Geen afbeelding" style={width: "100%", height:"15em"} )
+            .card-body
+              h5.card-title #{item.voornaam} #{item.familienaam}     
+      else
+        .col-lg-2.mb-3
+          .card.nietgecertificeerd(id=item._id onclick="clicked(this)")
+            img.card-img-top(src='/images/profilepictures/' + item._id + "." +item.imgext alt="Geen afbeelding" style={width: "100%", height:"15em"} )
+            .card-body
+              h5.card-title #{item.voornaam} #{item.familienaam}  
+
+block scripts
+  script.
+    function clicked(card){
+      var link = "/kandidaten/detail?id=" + card.id;
+      console.log(link);
+      window.location.href = link;
+    }
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+  script.
+    $(document).ready(function(){
+      var date_input_week=$('input[name="week"]'); //our date input has the name "date"
+
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        orientation: 'top auto',
+        autoclose: true,
+        todayHighlight: true,
+        startView: 1,
+        calendarWeeks: true
+    };
+
+    date_input_week.datepicker(options);
+
+    })
+  script.
+    $('#week').select2();
+    $('#week').on('dp.change', function (e) {
+      value = $("#week").val();
+      firstDate = moment(value, "MM/DD/YYYY").day(0).format("MM/DD/YYYY");
+      lastDate =  moment(value, "MM/DD/YYYY").day(6).format("MM/DD/YYYY");
+      $("#week").val(firstDate + "   -   " + lastDate);
+    });
+
+    var hidden = false
+    function toggleCards(){
+      console.log("toggle")
+      if(hidden){
+        $(".nietgecertificeerd").show()
+        hidden = false
+      }
+      else{
+        $(".nietgecertificeerd").hide()
+        hidden = true
+      }
+    }

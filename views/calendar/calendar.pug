@@ -1,0 +1,375 @@
+
+extends ../layout
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+    .container
+        .py-3.text-center
+            h1 Kalender
+    form(method="post" action="/calendar")
+        .row
+            .col-lg-4
+                .form-group
+                    label.control-label(for="date") Week van:
+                    input.form-control#date(name="date" placeholder="MM/DD/YYYY" type="text" autocomplete="off")
+            .col-lg-4.mt-2
+                br
+                input.btn.btn-outline-primary(type="submit" value="Submit") 
+    .row
+        .col.border.bg-light
+            p.font-weight-bold.text-center Lokaal
+        .col.border.bg-light
+            p.font-weight-bold.text-center Datum
+        .col.border.bg-light
+            p.font-weight-bold.text-center Maandag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Dinsdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Woensdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Donderdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Vrijdag
+    .row.text-center
+        .col.border.bg-light TC1
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_4_TC1(onclick="openpopup(this)") 
+        .col.border.bg-light
+            .row.border.bg-light.cell#di_1_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_2_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_3_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_4_TC1(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_2_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_3_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_4_TC1(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_2_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_3_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_4_TC1(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_2_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_3_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_4_TC1(onclick="openpopup(this)") 
+    .row.text-center
+        .col.border.bg-light TC2
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_4_TC2(onclick="openpopup(this)")
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_2_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_3_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_4_TC2(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_2_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_3_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_4_TC2(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_2_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_3_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_4_TC2(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_2_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_3_TC2(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_4_TC2(onclick="openpopup(this)") 
+    .row.text-center
+        .col.border.bg-light TC3
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_4_TC3(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_2_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_3_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_4_TC3(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_2_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_3_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_4_TC3(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC3(onclick="openpopup(this)")
+            .row.border.bg-light.cell#do_2_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_3_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_4_TC3(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_2_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_3_TC3(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_4_TC3(onclick="openpopup(this)") 
+    .row.text-center
+        .col.border.bg-light TC4
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_4_TC4(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_2_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_3_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_4_TC4(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_2_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_3_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_4_TC4(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_2_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_3_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_4_TC4(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_2_TC4(onclick="openpopup(this)")
+            .row.border.bg-light.cell#vr_3_TC4(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_4_TC4(onclick="openpopup(this)") 
+    .row.text-center
+        .col.border.bg-light TC7
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_4_TC7(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_2_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_3_TC7(onclick="openpopup(this)")
+            .row.border.bg-light.cell#di_4_TC7(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_2_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_3_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_4_TC7(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC7(onclick="openpopup(this)")
+            .row.border.bg-light.cell#do_2_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_3_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_4_TC7(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_2_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_3_TC7(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_4_TC7(onclick="openpopup(this)") 
+    .row.text-center
+        .col.border.bg-light TC Hal
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_4_TCHAL(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_2_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_3_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_4_TCHAL(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_2_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_3_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_4_TCHAL(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_2_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_3_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_4_TCHAL(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_2_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_3_TCHAL(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_4_TCHAL(onclick="openpopup(this)") 
+    .row.text-center
+        .col.border.bg-light Extern
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TC1(onclick="openpopup(this)")
+            .row.border.bg-ligh.cellt#ma_4_TC1(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TCEXTERN(onclick="openpopup(this)")
+            .row.border.bg-light.cell#di_2_TCEXTERN(onclick="openpopup(this)")
+            .row.border.bg-light.cell#di_3_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#di_4_TCEXTERN(onclick="openpopup(this)")
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_2_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_3_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#woe_4_TCEXTERN(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_2_TCEXTERN(onclick="openpopup(this)")
+            .row.border.bg-light.cell#do_3_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#do_4_TCEXTERN(onclick="openpopup(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TCEXTERN(onclick="openpopup(this)")
+            .row.border.bg-light.cell#vr_2_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#vr_3_TCEXTERN(onclick="openpopup(this)")
+            .row.border.bg-light.cell#vr_4_TCEXTERN(onclick="openpopup(this)") 
+
+    .modal.fade#model(tabindex='-1' role="dialog")
+        .modal-dialog(role="document")
+            .modal-content
+                .modal-header
+                    h5.modal-title Training
+                    button.close(type="button" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                .modal-body
+                    p#modelNavNummer
+                    p#modelAantalDeelnemers
+                    p#modelAantalSessies
+                    p#modelEigenaar
+                    p#modelType
+                    p#modelId
+                    p#opmerkingen
+                .modal-footer#addNewTraining
+                    button.btn.btn-outline-primary#navigateToListButton(type="button" onclick="navigateToList()") Voeg toe
+                    button.btn.btn-outline-secondary(type="button" data-dismiss="modal") Close
+                .modal-footer#DetailsTraining
+                    button.btn.btn-outline-danger#removeButton(type="button" onclick="removeOnDate()") Verwijder
+                    button.btn.btn-outline-primary#navigateToDetailsButton(type="button" onclick="navigateToDetails()") Details
+                    button.btn.btn-outline-secondary(type="button" data-dismiss="modal") Close
+
+block scripts
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+    script.
+        $(document).ready(function(){
+            var date_input=$('input[name="date"]'); //our date input has the name "date"
+            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+            var options={
+                orientation: 'top auto',
+                autoclose: true,
+                todayHighlight: true
+            };
+            date_input.datepicker(options);
+        })
+
+        $('#classroom').select2();
+
+        var locnr;
+        function openpopup(item){
+            $("#model").modal('show');
+            $("#navigateToListButton").attr("d",item.id)
+            var trainingen = !{trainingen}
+            if($("#" + item.id).text() == " "){
+                $(".modal-title").text("Training toevoegen")
+                $("#addNewTraining").show()
+                $("#DetailsTraining").hide()
+                $("#modelType").text("")
+                $("#modelNavNummer").text("")
+                $("#modelAantalDeelnemers").text("")
+                $("#modelAantalSessies").text("")
+                $("#modelEigenaar").text("")
+                $("#modelId").text("")
+                $("#opmerkingen").text("")
+                $("#navigateToDetailsButton").attr("d","")
+            }
+            else{
+                $("#addNewTraining").hide()
+                $("#DetailsTraining").show()
+                var locnr = parseInt($("#" + item.id).attr("listLoc"))
+                var type = "Type: " + trainingen[parseInt(locnr)].type
+                $(".modal-title").text(trainingen[parseInt(locnr)].type)
+                $("#modelType").text(type)
+                $("#modelNavNummer").text("Navigator nummer: " + !{trainingen}[locnr].navigatorNummer)
+                $("#modelAantalDeelnemers").text("#Deelnemers: " + !{trainingen}[locnr].aantalDeelnemers)
+                $("#modelAantalSessies").text("#Sessies: " + !{trainingen}[locnr].aantalSessies)
+                $("#modelEigenaar").text("Eigenaars: " + !{trainingen}[locnr].eigenaar)
+                $("#modelId").text("id " + !{trainingen}[locnr].id)
+                $("#opmerkingen").text("Opmerkingen: " + !{trainingen}[locnr].opmerkingen)
+                $("#navigateToDetailsButton").attr("d",!{trainingen}[locnr].id)
+
+            }
+        }
+
+        function navigateToList(){
+            var date = $("#navigateToListButton").attr("d")
+            link="/training?plaats=" + date + "&weekid=!{id}"
+            console.log(link);
+            window.location.href = link;
+        }
+
+        function navigateToDetails(item){
+            link="/training/detail?id="+$("#navigateToDetailsButton").attr("d")
+            console.log(link);
+            window.location.href = link;
+        }
+
+        function removeOnDate(){
+            var id = "!{id}"
+            var trainingid = $("#navigateToDetailsButton").attr("d")
+            var plaats = $("#navigateToListButton").attr("d")
+            link="/calendar/removeOnDate?weekid=" + id + "&trainingid=" +  $("#navigateToDetailsButton").attr("d") +"&plaats=" + plaats
+            console.log(link);
+            window.location.href = link;
+        }
+
+        var counter = 0
+        var trainingen = !{trainingen}
+        trainingen.forEach(myFunction);
+
+        function myFunction(training) {
+            training.locs.forEach(function(i){
+                let id = "#" + i
+                $(id).text(training.type);
+                $(id).attr("listLoc", counter);
+                let colorstring = "background-color: " +  training.color + ' !important'
+                $(id).attr('style', colorstring);
+            })
+            counter++
+
+        }
+
+
+

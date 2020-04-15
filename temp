@@ -1,0 +1,9 @@
++ Dubbelchecken ofdat geen 2 trainers met dezelfde naam bestaan bij toevoegen
++ Datums bekijken van trainingen en trainers 
++ rapporten uit lijsten trekken
++ Bij lijsten zorgen dat ergens in de pagina zelf opgeslagen is wat er getoond is zodat bijvoorbeeld bij het trekken van een lijst op de pagine met enkel bepaalde datums deze opnieuw opgezocht kan worden
+
++ Vragen
+    - Is edb ook een dropdown
+    - Indien slaagcijfer behaald is dan automatisch geslaagd?
+    - Wat is testing geslaagd op rapport kandidaat?

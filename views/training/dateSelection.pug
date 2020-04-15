@@ -1,0 +1,294 @@
+
+extends ../layout
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+    .top-buffer
+    h1 CALENDAR PAGE
+    .top-buffer
+    form(method="post" action="/calendar")
+        .row
+            .col-lg-4
+                .form-group
+                    label.control-label(for="date") Date:
+                    input.form-control#date(name="date" placeholder="MM/DD/YYYY" type="text")
+            .col-lg-4
+                input.btn.btn-primary(type="submit" value="Submit") 
+    .row
+        .col.border.bg-light
+            p.font-weight-bold.text-center Lokaal
+        .col.border.bg-light
+            p.font-weight-bold.text-center Datum
+        .col.border.bg-light
+            p.font-weight-bold.text-center Maandag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Dinsdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Woensdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Donderdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Vrijdag
+    .row.text-center
+        .col.border.bg-light TC1
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#cell11(onclick="openpopup(this)") #{maandag.lokalen.TC1[0]}
+            .row.border.bg-light.cell#cell12 #{maandag.lokalen.TC1[1]}
+            .row.border.bg-light.cell#cell13 #{maandag.lokalen.TC1[2]}
+            .row.border.bg-light.cell#cell14 #{maandag.lokalen.TC1[3]}
+        .col.border.bg-light
+            .row.border.bg-light.cell#cell15 #{dinsdag.lokalen.TC1[0]}
+            .row.border.bg-light.cell#cell16 #{dinsdag.lokalen.TC1[1]}
+            .row.border.bg-light.cell#cell17 #{dinsdag.lokalen.TC1[2]}
+            .row.border.bg-light.cell#cell18 #{dinsdag.lokalen.TC1[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell#cell19 #{woensdag.lokalen.TC1[0]}
+            .row.border.bg-light.cell#cell110 #{woensdag.lokalen.TC1[1]}
+            .row.border.bg-light.cell#cell111 #{woensdag.lokalen.TC1[2]}
+            .row.border.bg-light.cell#cell112 #{woensdag.lokalen.TC1[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell#cell113 #{donderdag.lokalen.TC1[0]}
+            .row.border.bg-light.cell#cell114 #{donderdag.lokalen.TC1[1]}
+            .row.border.bg-light.cell#cell115 #{donderdag.lokalen.TC1[2]}
+            .row.border.bg-light.cell#cell116 #{donderdag.lokalen.TC1[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell#cell117 #{vrijdag.lokalen.TC1[0]}
+            .row.border.bg-light.cell#cell118 #{vrijdag.lokalen.TC1[1]}
+            .row.border.bg-light.cell#cell19 #{vrijdag.lokalen.TC1[2]}
+            .row.border.bg-light.cell#cell120 #{vrijdag.lokalen.TC1[3]}
+    .row.text-center
+        .col.border.bg-light TC2
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{maandag.lokalen.TC2[0]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC2[1]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC2[2]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC2[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC2[0]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC2[1]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC2[2]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC2[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{woensdag.lokalen.TC2[0]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC2[1]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC2[2]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC2[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{donderdag.lokalen.TC2[0]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC2[1]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC2[2]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC2[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC2[0]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC2[1]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC2[2]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC2[3]}
+    .row.text-center
+        .col.border.bg-light TC3
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{maandag.lokalen.TC3[0]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC3[1]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC3[2]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC3[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC3[0]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC3[1]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC3[2]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC3[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{woensdag.lokalen.TC3[0]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC3[1]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC3[2]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC3[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{donderdag.lokalen.TC3[0]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC3[1]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC3[2]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC3[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC3[0]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC3[1]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC3[2]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC3[3]}
+    .row.text-center
+        .col.border.bg-light TC4
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{maandag.lokalen.TC4[0]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC4[1]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC4[2]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC4[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC4[0]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC4[1]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC4[2]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC4[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{woensdag.lokalen.TC4[0]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC4[1]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC4[2]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC4[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{donderdag.lokalen.TC4[0]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC4[1]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC4[2]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC4[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC4[0]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC4[1]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC4[2]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC4[3]}
+    .row.text-center
+        .col.border.bg-light TC7
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{maandag.lokalen.TC7[0]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC7[1]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC7[2]}
+            .row.border.bg-light.cell #{maandag.lokalen.TC7[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC7[0]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC7[1]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC7[2]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.TC7[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{woensdag.lokalen.TC7[0]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC7[1]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC7[2]}
+            .row.border.bg-light.cell #{woensdag.lokalen.TC7[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{donderdag.lokalen.TC7[0]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC7[1]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC7[2]}
+            .row.border.bg-light.cell #{donderdag.lokalen.TC7[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC7[0]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC7[1]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC7[2]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.TC7[3]}
+    .row.text-center
+        .col.border.bg-light TC Hal
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{maandag.lokalen.HAL[0]}
+            .row.border.bg-light.cell #{maandag.lokalen.HAL[1]}
+            .row.border.bg-light.cell #{maandag.lokalen.HAL[2]}
+            .row.border.bg-light.cell #{maandag.lokalen.HAL[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{dinsdag.lokalen.HAL[0]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.HAL[1]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.HAL[2]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.HAL[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{woensdag.lokalen.HAL[0]}
+            .row.border.bg-light.cell #{woensdag.lokalen.HAL[1]}
+            .row.border.bg-light.cell #{woensdag.lokalen.HAL[2]}
+            .row.border.bg-light.cell #{woensdag.lokalen.HAL[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{donderdag.lokalen.HAL[0]}
+            .row.border.bg-light.cell #{donderdag.lokalen.HAL[1]}
+            .row.border.bg-light.cell #{donderdag.lokalen.HAL[2]}
+            .row.border.bg-light.cell #{donderdag.lokalen.HAL[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{vrijdag.lokalen.HAL[0]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.HAL[1]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.HAL[2]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.HAL[3]}
+    .row.text-center
+        .col.border.bg-light Extern
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{maandag.lokalen.EXTERN[0]}
+            .row.border.bg-light.cell #{maandag.lokalen.EXTERN[1]}
+            .row.border.bg-light.cell #{maandag.lokalen.EXTERN[2]}
+            .row.border.bg-ligh.cellt #{maandag.lokalen.EXTERN[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{dinsdag.lokalen.EXTERN[0]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.EXTERN[1]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.EXTERN[2]}
+            .row.border.bg-light.cell #{dinsdag.lokalen.EXTERN[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{woensdag.lokalen.EXTERN[0]}
+            .row.border.bg-light.cell #{woensdag.lokalen.EXTERN[1]}
+            .row.border.bg-light.cell #{woensdag.lokalen.EXTERN[2]}
+            .row.border.bg-light.cell #{woensdag.lokalen.EXTERN[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{donderdag.lokalen.EXTERN[0]}
+            .row.border.bg-light.cell #{donderdag.lokalen.EXTERN[1]}
+            .row.border.bg-light.cell #{donderdag.lokalen.EXTERN[2]}
+            .row.border.bg-light.cell #{donderdag.lokalen.EXTERN[3]}
+        .col.border.bg-light 
+            .row.border.bg-light.cell #{vrijdag.lokalen.EXTERN[0]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.EXTERN[1]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.EXTERN[2]}
+            .row.border.bg-light.cell #{vrijdag.lokalen.EXTERN[3]}
+
+    .modal.fade#model(tabindex='-1' role="dialog")
+        .modal-dialog(role="document")
+            .modal-content
+                .modal-header
+                    h5.modal-title titel
+                    button.close(type="button" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                .modal-body
+                    p modal body text
+                .modal-footer
+                    button.btn.btn-primary(type="button") Save changes
+                    button.btn.btn-secondary(type="button" data-dismiss="modal") Close
+
+
+block scripts
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+    script.
+        $(document).ready(function(){
+            var date_input=$('input[name="date"]'); //our date input has the name "date"
+            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+            var options={
+                orientation: 'top auto',
+                autoclose: true,
+                todayHighlight: true
+        };
+        date_input.datepicker(options);
+        })
+    script.
+        $('#classroom').select2();
+
+    script.
+        function openpopup(item){
+            $("#model").modal('show');
+            console.log(item.id)
+        }

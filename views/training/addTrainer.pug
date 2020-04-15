@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  .container
+    .py-5.text-center
+      h2 Nieuwe trainer toevoegen
+  .container
+    form(method='post' action='/training/addTrainer')
+      h4.mb-3 Algemeen
+      .row
+        .col-lg.mb-3
+          label(for='naam')
+            |Naam trainer:
+          input#type.form-control(name='naam' type='text' placeholder='Matthijs' value='' )
+          .invalid-feedback
+            | Vul een geldige naam in
+      .row
+        button.btn.btn-primary.btn-lg.btn-block#dataSelecteren(type='submit') Toevoegen

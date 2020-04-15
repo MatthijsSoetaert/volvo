@@ -1,0 +1,289 @@
+extends ../layout
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Aanvraag Training Toevoegen
+  .container
+    form(method='post' action='/training/edit')
+      h4.mb-3 Algemeen
+      .form-group
+        input.form-control(type="hidden", name="id", value=training._id)
+      .row
+        .col-lg.mb-3
+          label(for='type')
+            |Type opleiding:
+          input#type.form-control(name='type' type='text' placeholder='Lassen' value=training.type )
+          .invalid-feedback
+            | Vul een geldig type in.
+        .col-lg-3.mb-3
+          label(for='color')
+            |Kleur:
+          input#color.form-control(name='color' type='text'  value=training.color autocomplete="off")
+      .row
+        .col-lg.mb-3
+          label(for='navigatorNr')
+            |NavigatorNr:
+          input#navigatorNr.form-control(name='navigatorNr' type='text' placeholder='311700' value=training.navigatorNummer )
+          .invalid-feedback
+            | Vul een geldig navigator nummer in.
+      .row
+        .col-lg.mb-3
+          label(for='aantalDeelnemers')
+            |Aantal deelnemers:
+          input#aantalDeelnemers.form-control(name='aantalDeelnemers' type='number' placeholder='8' value=training.aantalDeelnemers )
+          .invalid-feedback
+            | Vul een geldige aantal deelnemers in.
+        .col-lg.mb-3
+          label(for='aantalSessies')
+            |Aantal sessies:
+          input#aantalSessies.form-control(name='aantalSessies' type='number' placeholder='Lassen' value=training.aantalSessies )
+          .invalid-feedback
+            | Vul een geldige aantal sessies in.
+
+      .row
+        .col-lg-8.mb-3
+          label(for='eigenaar')
+            |Eigenaar:
+          select#eigenaar.form-control(name='eigenaar')
+            each item in trainers
+              option #{item.naam}
+          .invalid-feedback
+            |Vul een geldige eigenaar in.
+        .col-lg-4.mb-3.form-group
+          label(for='status')
+            |Status:
+          select#status.form-control(name='status')
+            option#statusNietGestart Niet gestart
+            option#statusGestart Gestart
+            option#statusWachtend Wachtend
+            option#statusEinde Einde
+
+      h4.mb-3 Financieel
+      .row
+        .col-lg.mb-3
+          label(for='budget')
+            |Budget:
+          .input-group
+            .input-group-prepend
+              span.input-group-text €
+            input#budget.form-control(name='budget' type='number' placeholder='8' value=training.budget )
+          
+            .invalid-feedback
+              | Vul een geldige budget in.
+      .row
+        .col-lg.mb-3.pt-2.ml-3
+          br
+          input.form-check-input#offerte(type="checkbox" value="false" name="offerte")
+          label.form-check-label#offerteLabel(for="offerte") Offerte gemaakt
+          #uploadOfferte
+            br
+            label(for="uploadOfferte")
+              | Upload offerte:
+            input.form-control-file(type="file" name="uploadOfferte" )
+            br
+        .col-lg.mb-3.pt-2.ml-3
+          br
+          input.form-check-input#bestelbon(type="checkbox" value="false" name="bestelbon")
+          label.form-check-label#bestelbonLabel(for="bestelbon") Bestelbon gemaakt
+          #uploadBestelbon
+            br
+            label(for="uploadBestelbon")
+              | Upload bestelbon:
+            input.form-control-file(type="file" name="uploadBestelbon" )
+            br
+        .col-lg.mb-3.pt-2.ml-3
+          br
+          input.form-check-input#factuur(type="checkbox" value="false" name="factuur")
+          label.form-check-label#factuurLabel(for="factuur") Factuur gemaakt
+          #uploadFactuur
+            br
+            label(for="uploadFactuur")
+              | Upload factuur:
+            input.form-control-file(type="file" name="uploadFactuur" )
+            br
+
+      .row
+        .col-lg.mb-3
+          label(for='edb')
+            |Edb:
+          input#edb.form-control(name='edb' type='text' placeholder='' value=training.edb )
+          .invalid-feedback
+            | Vul een geldig edb in.
+        .col-lg-4.mb-3.form-group
+          label(for='kostenplaats')
+            |Kostenplaats:
+          select#kostenplaats.selectpicker.form-control(name='kostenplaats' multiple="multiple" )
+            each item in kostenplaatsen
+              option #{item.naam}
+      h4.mb-3 Subsidies
+      .row
+        .col-lg.mb-3.ml-3
+          input.form-check-input#subisidie(type="checkbox" value="false" name="subsidie")
+          label.form-check-label#subsidieLabel(for="subsidie") Gesubsidieerd?
+
+      #subsidieHiddenForm
+        .row
+          .col-lg-6.mb-3.form-group
+            label(for='subsidieInstelling')
+              |Subsidie Instelling:
+            select#subsidieInstelling.form-control(name='subsidieInstelling' selected=training.subsideInstelling )
+              option#subsidieInstellingVormatal Vormetal
+              option#subsidieInstellingAndere andere instelling
+               each item in subsidieInstellingen
+                option(id="subsidieInstelling" + item.naam) #{item.naam}
+          .col-lg-6.mb-3.form-group
+            label(for='subsidieAanvraag')
+              |Subsidie aanvraag:
+            select#subsidieAanvraag.form-control(name='subsidieAanvraag' value=training.subsidieAanvraag )
+              option#subsidieAanvraagNietGestart Niet gestart
+              option#subsidieAanvraagDocumentenWeg Documenten weg
+              option#subsidieAanvraagTeTekenen Te tekenen
+              option#subsidieAanvraagSubsidieAangevraagd Subsidie aangevraagd
+              option#subsidieAanvraagAfgehandeld Afgehandeld
+
+        .row
+          .col-lg-6.mb-3.form-group             
+            label(for='subsidieAfhandeling')
+              |Subsidie afhandeling:
+            select#subsidieAfhandeling.form-control(name='subsidieAfhandeling' selected=training.subsidieAfhandeling )
+              option#subsidieAfhandelingNietGestart Niet gestart
+              option#subsidieAfhandelingGestart Gestart
+              option#subsidieAfhandelingWachtend Wachtend
+              option#subsidieAfhandelingEinde Einde
+          .col-lg-6.mb-3
+              label(for='subsidieBedrag')
+                |Subsidie bedrag:
+              .input-group
+                .input-group-prepend
+                  span.input-group-text €
+                input#subsidieBedrag.form-control(name='subsidieBedrag' type='number' placeholder='8' value=training.subsidieBedrag )
+                .invalid-feedback
+                  | Vul een geldige subsidie bedrag in.
+      hr
+      .row
+        .col-lg-2.mb-3
+          h5 Opmerkingen:
+        .col-lg-10.mb-3
+          .form-group
+            textarea.form-control(rows="6" name="Opmerkingen" value=training.opmerkingen) 
+      hr.mb-4
+      .row
+        .col
+          a.btn.btn-outline-danger.btn-lg.btn-block#dataSelecteren(href="/training/remove?id="+training._id) Verwijder
+        .col
+          a.btn.btn-outline-secondary.btn-lg.btn-block#dataSelecteren(href="/training") Cancel
+        .col
+          button.btn.btn-outline-primary.btn-lg.btn-block#dataSelecteren(type='submit') Voltooien
+        
+      br
+      br
+
+block scripts
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js")
+  script.
+    switch("!{training.subsidieAfhandeling}") { 
+      case "Niet gestart" : $("#subsidieAfhandelingNietGestart").attr("selected","selected");break;   
+      case "Gestart" : $("#subsidieAfhandelingGestart").attr("selected","selected");break; 
+      case "Wachtend" : $("#subsidieAfhandelingWachtend").attr("selected","selected");break;    
+      case "Einde" : $("#subsidieAfhandelingEinde").attr("selected","selected");break;    
+    }
+
+    switch("!{training.subsidieAanvraag}") { 
+      case "Niet gestart" : $("#subsidieAanvraagNietGestart").attr("selected","selected");break;    
+      case "Documenten weg" : $("#subsidieAanvraagDocumentenWeg").attr("selected","selected");break;    
+      case "Te tekenen" : $("#subsidieAanvraagTeTekenen").attr("selected","selected");break;    
+      case "Subsidie aangevraagd" : $("#subsidieAanvraagSubsidieAangevraagd").attr("selected","selected");break;    
+      case "Afgehandeld" : $("#subsidieAanvraagAfgehandeld").attr("selected","selected");break;    
+    }
+
+    switch("!{training.status}") { 
+      case "Niet gestart" : $("#statusNietGestart").attr("selected","selected");break;    
+      case "Gestart" : $("#statusGestart").attr("selected","selected");break;    
+      case "Wachtend" : $("#statusWachtend").attr("selected","selected");break;    
+      case "Einde" : $("#statusEinde").attr("selected","selected");break;    
+    }
+
+    $("#subsidieInstelling!{training.subsidieInstelling}").attr("selected","selected");
+
+    $('.selectpicker').selectpicker('val', "!{training.kostenplaats}");
+
+
+    offerteCheckbox = $('#offerte')
+    bestelbonCheckbox = $('#bestelbon')
+    factuurCheckbox = $('#factuur')
+    subsidieCheckbox = $('#subisidie')
+    hiddenForm = $('#subsidieHiddenForm');
+
+    hiddenForm = $('#subsidieHiddenForm');
+
+    offerteCheckboxLabel = $('#offerteLabel')
+    bestelbonCheckboxLabel = $('#bestelbonLabel')
+    factuurCheckboxLabel = $('#factuurLabel')
+    subsidieCheckboxLabel = $('#subisidieLabel')
+
+    hiddenForm.hide();
+
+    if(!{training.offerte}){
+        offerteCheckboxLabel.addClass("active")
+        offerteCheckbox.attr("checked", "checked")
+    }
+
+    if(!{training.bestelbon}){
+        bestelbonCheckboxLabel.addClass("active")
+        offerteCheckbox.attr("checked", "checked")
+    }
+
+    if(!{training.subsidie}){
+        subsidieCheckboxLabel.addClass("active")
+        subsidieCheckbox.attr("checked", "checked")
+        hiddenForm.show();
+    }
+
+    if(!{training.factuur}){
+        factuurCheckboxLabel.addClass("active")
+        offerteCheckbox.attr("checked", "checked")
+    }
+
+    subsidieCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+        hiddenForm.show();
+
+      } else {
+        hiddenForm.hide();
+        this.value= "false"
+      }
+    });
+
+    offerteCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+    bestelbonCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+    factuurCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+  
+  script.
+    $(function () {
+      $('#color').colorpicker();
+    });
+

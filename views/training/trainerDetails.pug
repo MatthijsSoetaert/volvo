@@ -1,0 +1,61 @@
+extends ../layout
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Details trainer: #{trainer.naam}
+  .container
+  form(method="post" action="/training/trainers/details?id=" + trainer._id)
+    .row
+      .col-lg-4
+          .form-group
+            label.control-label(for="trainer") Trainer:
+            input.form-control#Date(name="trainer" placeholder="Matthijs" type="text")
+      .col-lg-1.mt-2
+        br
+        input.btn.btn-outline-primary(type="submit" value="Submit") 
+  .top-buffer
+  table.table
+    thead
+      tr
+        th(scope="col") Type
+        th(scope="col") Aantal deelnemers
+        th(scope="col") Aantal sessies
+        th(scope="col") Navigator nummer
+    tbody#table
+      each item in trainingen
+        tr
+          td #{item.type}
+          td #{item.aantalDeelnemers}
+          td #{item.aantalSessies}
+          td #{item.navigatorNummer}
+
+          td 
+            button.btn.btn-outline-primary(id = item._id  onclick="details(this)") Details
+block scripts
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+  script.
+    function details(button){
+      var link = "/training/detail?id=" + button.id;
+      console.log(link);
+      window.location.href = link;
+    }
+  script.
+    $(document).ready(function(){
+      var date_input_tot=$('input[name="trainer"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+          orientation: 'top auto',
+          autoclose: true,
+          todayHighlight: true
+      };
+
+      date_input_tot.datepicker(options);
+
+    })
+  script.
+    $('#Date').select2();

@@ -1,0 +1,95 @@
+extends ../layout
+
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Subsidies 
+  form(method="post" action="/training/subsidies" autocomplete="off")
+    .row#controls
+      .col-lg-3
+          .form-group
+            label.control-label(for="subsidie") Subsidie:
+            input.form-control#TrainingNaam(name="subsidie" placeholder="Matthijs" type="text")
+      .col-lg-3
+          .form-group
+            label.control-label(for="van") Van:
+            input.form-control#vanDate(name="van" type="text" placeholder="MM/DD/YYYY")
+      .col-lg-3
+          .form-group
+            label.control-label(for="tot") Tot:
+            input.form-control#totDate(name="tot" type="text" placeholder="MM/DD/YYYY")
+      .col-lg-1.mt-2
+        br
+        input.btn.btn-outline-primary(type="submit" value="Submit") 
+      .col-lg-1.mt-2
+        br
+        a.btn.btn-outline-primary(href="/training/subsidies/subsidieInstellingen") SubsidieInstellingen
+  .top-buffer
+  table.table
+    thead
+      tr
+        th(scope="col") Week van
+        th(scope="col") Subsidie instelling
+        th(scope="col") Subsidie aanvraag
+        th(scope="col") Subsidie afhandeling
+        th(scope="col") Subsidie bedrag
+    tbody#table
+      each item in trainingen
+        -function prettyDate(dateString){
+          -var date = new Date(dateString);
+          -var d = date.getDate();
+          -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+          -var m = monthNames[date.getMonth()];
+          -var y = date.getFullYear();
+          -return d+' '+m+' '+y;
+        -}
+        tr
+          td #{prettyDate(item.datum)}
+          td #{item.subsidieInstelling}
+          td #{item.subsidieAanvraag}
+          td #{item.subsidieAfhandeling}
+          td #{item.subsidieBedrag}
+          td 
+            button.btn.btn-outline-primary.details-buttons(id = item._id onclick="clicked(this)") Detail
+
+block scripts
+  script.
+    function clicked(button){
+      var link = "/training/detail?id=" + button.id;
+      console.log(link);
+      window.location.href = link;
+    }
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+  script.
+    $(document).ready(function(){
+      var date_input_tot=$('input[name="van"]'); //our date input has the name "date"
+      var date_input_van=$('input[name="tot"]'); //our date input has the name "date"
+
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+          orientation: 'top auto',
+          autoclose: true,
+          todayHighlight: true
+      };
+      date_input_tot.datepicker(options);
+      date_input_van.datepicker(options);
+    })
+  script.
+    $('#vanDate').select2();
+    $('#totDate').select2();
+
+  script.
+    $(document).ready(function(){
+      $("#TrainingNaam").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#table tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });

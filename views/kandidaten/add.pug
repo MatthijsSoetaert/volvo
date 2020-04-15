@@ -1,0 +1,186 @@
+extends ../layout
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Kandidaat Toevoegen
+  .container
+    form(method='post' action='/kandidaten/add' encType="multipart/form-data" autocomplete="off")
+      h4.mb-3 Algemeen
+      .row
+        .col-lg.mb-3
+          .form-group
+            label(for="profilePicture")
+              | Profielfoto:
+            input.form-control-file(type="file" name="profilePicture" )
+        .col-lg-9.mb-3
+          .row
+            .col-lg-4.mb-3
+              label(for='voornaam')
+                |Voornaam:
+              input#voornaam.form-control(name='voornaam' type='text' placeholder='Matthijs' value='' )
+              .invalid-feedback
+                | Vul een geldig voornaam nummer in.
+            .col-lg-4.mb-3
+              label(for='familienaam')
+                |Familienaam:
+              input#familienaam.form-control(name='familienaam' type='text' placeholder='Soetaert' value='' )
+              .invalid-feedback
+                | Vul een geldig familienaam nummer in.
+            .col-lg-4
+              .form-group
+                label.control-label(for="week") Week:
+                input.form-control#week(name="week" type="text" placeholder="MM/DD/YYYY")
+          hr
+          .row.ml-3
+            .col-lg-3.mb-3.pt-2.ml-3
+              input.form-check-input#werkplekleren(type="checkbox" value="false" name="werkplekleren")
+              label.form-check-label(for="werkplekleren") Werkplekleren
+            .col-lg-3.mb-3.pt-2.ml-3  
+              input.form-check-input#rehire(type="checkbox" value="false" name="rehire")
+              label.form-check-label(for="rehire") Rehire
+            .col-lg-3.mb-3.pt-2.ml-3
+              input.form-check-input#reguliere(type="checkbox" value="false" name="reguliere")
+              label.form-check-label(for="reguliere") Reguliere
+          hr
+          .row
+            .col-lg-3.mb-3.pt-2.ml-3
+              .ml-4
+                input.form-check-input#veiligheid(type="checkbox" value="false" name="veiligheid")
+                label.form-check-label(for="veiligheid") Veiligheid geslaagd
+              .row
+                .col-lg-6
+                  input#veiligheidscore.form-control(name='veiligheidscore' type='number' placeholder='8' value='' )
+                  .invalid-feedback
+                    | Vul een geldige veiligheidscore in.
+                .col-lg-6
+                  h4 /15
+            .col-lg-3.mb-3.pt-2.ml-3
+              .ml-4
+                input.form-check-input#cc(type="checkbox" value="false" name="cc")
+                label.form-check-label(for="cc") CC geslaagd
+              .row
+                .col-lg-6
+                  input#ccscore.form-control(name='ccscore' type='number' placeholder='8' value='' )
+                  .invalid-feedback
+                    | Vul een geldige ccscore in.
+                .col-lg-6
+                  h4 /12
+
+            .col-lg-3.mb-3.pt-2.ml-3
+              .ml-4
+                input.form-check-input#takel(type="checkbox" value="false" name="takel")
+                label.form-check-label(for="takel") Takel geslaagd
+              .row
+                .col-lg-6
+                  input#takelscore.form-control(name='takelscore' type='number' placeholder='8' value='' )
+                  .invalid-feedback
+                    | Vul een geldige takelscore in.
+                .col-lg-6
+                  h4 /15
+      .row
+        .col-lg.mb-3
+          .ml-4
+            input.form-check-input#gecertificeerd(type="checkbox" value="false" name="gecertificeerd")
+            label.form-check-label(for="gecertificeerd") Gecertificeerd
+      hr.mb-4
+      .row
+        .col
+          button.btn.btn-outline-primary.btn-lg.btn-block#dataSelecteren(type='submit') Toevoegen
+        .col
+          button.btn.btn-outline-danger.btn-lg.btn-block#cancel Cancel
+      br
+      br
+
+block scripts
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+  script.
+    $(document).ready(function(){
+        var date_input_week=$('input[name="week"]'); //our date input has the name "date"
+
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        var options={
+            orientation: 'top auto',
+            autoclose: true,
+            todayHighlight: true,
+            startView: 1,
+            calendarWeeks: true
+    };
+
+    date_input_week.datepicker(options);
+
+    })
+
+  script.
+    gecertificeerdCheckbox = $('#gecertificeerd')
+    werkpleklerenCheckbox = $('#werkplekleren')
+    rehireCheckbox = $('#rehire')
+    reguliereCheckbox = $('#reguliere')
+    veiligheidCheckbox = $('#veiligheid')
+    ccCheckbox = $('#cc')
+    takelCheckbox = $('#takel')
+
+    gecertificeerdCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+
+      } else {
+        this.value= "false"
+      }
+    });
+
+    werkpleklerenCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+    rehireCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+    reguliereCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+    veiligheidCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+    ccCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+    takelCheckbox.on('click', function() {
+      if($(this).is(':checked')) {
+        this.value= "true"
+      } else {
+        this.value= "false"
+      }
+    });
+
+  script.
+    $('#week').select2();
+
