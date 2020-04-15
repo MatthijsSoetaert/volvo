@@ -47,7 +47,10 @@ app.use(flash());
 
 
 //MongoBD url
-var url = "mongodb+srv://matthijssoetaert:DDq_82394@volvo-0yvmo.mongodb.net/test?retryWrites=true&w=majority";
+//var url = "mongodb+srv://matthijssoetaert:DDq_82394@volvo-0yvmo.mongodb.net/test?retryWrites=true&w=majority";
+var mongoDB = 'mongodb+srv://matthijssoetaert:DDq_82394@volvo-0yvmo.mongodb.net/test?retryWrites=true&w=majority'
+var url = process.env.MONGODB_URI || mongoDB;
+
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true,dbName: "Volvo" });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
