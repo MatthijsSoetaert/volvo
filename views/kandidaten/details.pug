@@ -1,0 +1,170 @@
+extends ../layout
+
+block content
+  .container
+    .py-5.text-center 
+      h2 Details #{kandidaat.voornaam} #{kandidaat.familienaam}
+  .container
+      h4.mb-3 Algemeen
+      .row
+        .col-lg-3.mb-3
+          img(src='/images/profilepictures/' + kandidaat._id + "." +kandidaat.imgext style="width: 12em; height: 15em")
+        .col-lg-9.mb-3
+          .row
+            .col-lg.mb-3
+              h1 #{kandidaat.voornaam} #{kandidaat.familienaam}
+          .row.ml-2
+            .col-lg-3.mb-3.pt-2.ml-3
+              input#werkplekleren(type="checkbox" value="false" name="werkplekleren")
+              label#werkpleklerenLabel(for="werkplekleren") Werkplekleren
+            .col-lg-3.mb-3.pt-2.ml-3  
+              input#rehire(type="checkbox" value="false" name="rehire")
+              label#rehireLabel(for="rehire") Rehire
+            .col-lg-3.mb-3.pt-2.ml-3
+              input#reguliere(type="checkbox" value="false" name="reguliere")
+              label#reguliereLabel(for="reguliere") Reguliere
+          hr
+          .row
+            .col-lg-3.mb-3.pt-2.ml-3
+              .ml-4
+                input#veiligheid(type="checkbox" value="false" name="veiligheid")
+                label#veiligheidLabel(for="veiligheid") Veiligheid geslaagd
+              .row.mt-2
+                .col-lg-6
+                  h4 #{kandidaat.veiligheidscore}/15
+
+            .col-lg-3.mb-3.pt-2.ml-3
+              .ml-4
+                input#cc(type="checkbox" value="false" name="cc")
+                label#ccLabel(for="cc") CC geslaagd
+              .row.mt-2
+                .col-lg-6
+                  h4 #{kandidaat.ccscore}/12
+
+
+            .col-lg-3.mb-3.pt-2.ml-3
+              .ml-4
+                input#takel(type="checkbox" value="false" name="takel")
+                label#takelLabel(for="takel") Takel geslaagd
+              .row.mt-2
+                .col-lg-6
+                  h4 #{kandidaat.takelscore}/15
+      .row
+        .col-lg.mb-3
+          .ml-4
+            input#gecertificeerd(type="checkbox" value="false" name="gecertificeerd")
+            label#gecertificeerdLabel(for="gecertificeerd") Gecertificeerd
+      hr.mb-4
+      h4.mb-3 Feedback
+      .row
+        .col-lg-1.mb-3
+          h5 Dag 1:
+        .col-lg-11.mb-3
+          p.lead #{kandidaat.feedback1}
+      .row
+        .col-lg-1.mb-3
+          h5 Dag 2:
+        .col-lg-11.mb-3
+          p.lead #{kandidaat.feedback2}
+      .row
+        .col-lg-1.mb-3
+          h5 Dag 3:
+        .col-lg-11.mb-3
+          p.lead #{kandidaat.feedback3}
+      .row
+        .col-lg-1.mb-3
+          h5 Dag 4:
+        .col-lg-11.mb-3
+          p.lead #{kandidaat.feedback4}
+      .row
+        .col-lg-1.mb-3
+          h5 Dag 5:
+        .col-lg-11.mb-3
+          p.lead #{kandidaat.feedback5}
+      hr
+      .row
+        .col-lg-2.mb-3
+          h5 Eindbesluit:
+        .col-lg-10.mb-3
+          p.lead #{kandidaat.eindbesluit}
+      hr
+      .row
+        .col
+          button.btn.btn-outline-primary.btn-lg.btn-block( id=kandidaat._id onclick="clicked(this)") Aanpassen
+        .col
+          button.btn.btn-outline-danger.btn-lg.btn-block#cancel Cancel
+        .col
+          a.btn.btn-outline-danger.btn-lg.btn-block#downloadVerslag(href="/pdf/downloadVerslagKandidaat?id=" + kandidaat._id) Download verslag
+      br
+      br  
+
+block scripts
+  script.
+    function clicked(item){
+      var link = "/kandidaten/edit?id=" + item.id;
+      console.log(link);
+      window.location.href = link;
+    }
+  script.
+    gecertificeerdCheckbox = $('#gecertificeerd')
+    werkpleklerenCheckbox = $('#werkplekleren')
+    rehireCheckbox = $('#rehire')
+    reguliereCheckbox = $('#reguliere')
+    veiligheidCheckbox = $('#veiligheid')
+    ccCheckbox = $('#cc')
+    takelCheckbox = $('#takel')
+
+    gecertificeerdCheckbox.attr("disabled","true")
+    werkpleklerenCheckbox.attr("disabled","true")
+    rehireCheckbox.attr("disabled","true")
+    reguliereCheckbox.attr("disabled","true")
+    veiligheidCheckbox.attr("disabled","true")
+    ccCheckbox.attr("disabled","true")
+    takelCheckbox.attr("disabled","true")
+
+    gecertificeerdCheckboxLabel = $('#gecertificeerdLabel')
+    werkpleklerenCheckboxLabel = $('#werkpleklerenLabel')
+    rehireCheckboxLabel = $('#rehireLabel')
+    reguliereCheckboxLabel = $('#reguliereLabel')
+    veiligheidCheckboxLabel = $('#veiligheidLabel')
+    ccCheckboxLabel = $('#ccLabel')
+    takelCheckboxLabel = $('#takelLabel')
+
+
+
+    if(!{kandidaat.gecertificeerd}){
+        gecertificeerdCheckboxLabel.addClass("active")
+        gecertificeerdCheckbox.attr("checked", "checked")
+    }
+
+    if(!{kandidaat.werkplekleren}){
+        werkpleklerenCheckboxLabel.addClass("active")
+        werkpleklerenCheckbox.attr("checked", "checked")
+    }
+
+    if(!{kandidaat.rehire}){
+        rehireCheckboxLabel.addClass("active")
+        rehireCheckbox.attr("checked", "checked")
+    }
+
+    if(!{kandidaat.reguliere}){
+        reguliereCheckboxLabel.addClass("active")
+        reguliereCheckbox.attr("checked", "checked")
+    }
+
+    if(!{kandidaat.veiligheid}){
+        veiligheidCheckboxLabel.addClass("active")
+        veiligheidCheckbox.attr("checked", "checked")
+    }
+
+    if(!{kandidaat.cc}){
+        ccCheckboxLabel.addClass("active")
+        ccCheckbox.attr("checked", "checked")
+    }
+
+    if(!{kandidaat.takel}){
+        takelCheckboxLabel.addClass("active")
+        takelCheckbox.attr("checked", "checked")
+    }
+
+

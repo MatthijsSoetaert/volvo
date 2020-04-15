@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .center
+    .card(style="width: 18rem;")
+      .card-body
+        .card-title AddNewUser
+          form(action="/login/signup" method="post")
+            .form-group
+              label(for="email") Email address
+              input.form-control#email(type="email" aria-describedby="emailhelp" placeholder="enter email" name="email")
+              small#emailhelp.form-text.text-muted
+            .form-group
+              label(for="password") Password
+              input.form-control#password(type="password" placeholder="Password" name="password")
+            input.btn.btn-primary(type="submit" value="Submit") 

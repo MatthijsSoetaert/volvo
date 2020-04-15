@@ -1,0 +1,70 @@
+extends layout
+
+block content
+    br
+    br
+    br
+    .container
+        .row
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title Bezetting lokalen
+                        p.card-text Bekijk hier de bezetting van de lokalen
+                        br
+                        a.card-link(href="/calendar") Bekijk
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title Aanvragen opleiding
+                        p.card-text Bekijk hier de aanvragen van de opleidingen
+                        a.card-link(href="/training") Bekijk
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title Kandidaten
+                        p.card-text Bekijk hier alle info over de kandidaten
+                        br
+                        a.card-link(href="/kandidaten") Bekijk
+        br
+        .row
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title Kandidaten per week
+                        p.card-text Bekijk hier alle info over de kandidaten deze week
+                        a.card-link(href="/kandidaten/kandidatenpw") Bekijk
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title Trainers
+                        p.card-text Bekijk hier info over de trainers
+                        br
+                        a.card-link(href="/training/trainers") Bekijk
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title Subsidies
+                        p.card-text Bekijk hier info over de gekregen subsidies
+                        br
+                        a.card-link(href="/training/subsidies") Bekijk
+        br
+        .row
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title SubsidieInstellingen
+                        p.card-text Bekijk hier info over de subsidie instellingen
+                        a.card-link(href="/training/subsidies/subsidieInstellingen") Bekijk
+            .col-lg-4
+                .card
+                    .card-body
+                        h5.card-title Kostenplaats
+                        p.card-text Bekijk hier info over de kostenplaatsen
+                        br
+                        a.card-link(href="/training/kostenplaatsen") Bekijk
+    br
+    .container
+        .py-5.text-center
+            img#logo(src="/images/logo.png")
+            

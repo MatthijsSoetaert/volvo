@@ -1,0 +1,69 @@
+extends ../layout
+
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Kandidaten
+  form(method="post" action="/training?id=")
+    .row
+      .col-lg-3
+        .form-group
+            label.control-label(for="kandidaatnaam") Zoek:
+            input.form-control#kandidaatNaam(name="kandidaatnaam" placeholder="Matthijs" type="text")
+      .col-lg-1.mt-2
+        br
+        input.btn.btn-outline-primary(type="submit" value="Submit") 
+      .col-lg-6.mt-2
+        br
+        .text-right
+          a.btn.btn-outline-primary(href="/kandidaten/kandidatenpw") Kandidaten per week
+      .col-lg-2.mt-2
+        br
+        .text-right
+          a.btn.btn-outline-primary(href="/kandidaten/add") Voeg kandidaat toe
+  .top-buffer
+  table.table
+    thead
+      tr
+        th(scope="col") Naam
+        th(scope="col") Week
+        th(scope="col") Details
+
+    tbody#table
+      each item in kandidaten
+        -function prettyDate(dateString){
+          -var date = new Date(dateString);
+          -var d = date.getDate();
+          -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+          -var m = monthNames[date.getMonth()];
+          -var y = date.getFullYear();
+          -return d+' '+m+' '+y;
+        -}
+        tr
+          td #{item.voornaam} #{item.familienaam}
+          td #{prettyDate(item.datum)} 
+          td
+            button.btn.btn-outline-primary(id = item._id onclick="clicked(this)") Details
+
+block scripts
+  script.
+    function clicked(button){
+      var link = "/kandidaten/detail?id=" + button.id;
+      console.log(link);
+      window.location.href = link;
+    }
+
+  script.
+    $(document).ready(function(){
+      $("#kandidaatNaam").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#table tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  

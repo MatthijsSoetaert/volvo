@@ -1,0 +1,62 @@
+extends ../layout
+
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Subsidie instellingen
+  .top-buffer
+  .row
+    .col-lg.mt-2
+      br
+      .text-right
+        button.btn.btn-outline-primary(onclick="openpopup()") Instelling toevoegen
+  br
+  table.table
+    thead
+      tr
+        th(scope="col") Naam
+        th(scope="col") Remove
+    tbody#table
+      each item in instellingen
+        tr
+          td #{item.naam}
+          td 
+            button.btn.btn-outline-danger(id = item._id + "+remove" onclick="remove(this)") Verwijder
+  .modal.fade#model(tabindex='-1' role="dialog")
+    .modal-dialog(role="document")
+        .modal-content
+          form(method="post" action="/training/subsidies/instelling/toevoegen")
+            .modal-header
+                h5.modal-title Subsidie instelling toevoegen
+                button.close(type="button" data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") &times;
+            .modal-body
+              .form-group
+                label.control-label(for="instelling") Instelling:
+                input.form-control#TrainingNaam(name="instelling" placeholder="Vormatal" type="text")
+            .modal-footer
+              button.btn.btn-outline-secondary(type="button" data-dismiss="modal") Close
+              input.btn.btn-outline-primary(type="submit" value="Submit") 
+block scripts
+  script.
+    function remove(button){
+      var link = "/training/subsidies/instelling/verwijderen?id=" + button.id.split("+")[0];
+      console.log(link)
+      window.location.href = link;
+    }
+    function openpopup(){
+      $("#model").modal('show');
+    }
+  script.
+    $(document).ready(function(){
+      $("#trainerName").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#table tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });

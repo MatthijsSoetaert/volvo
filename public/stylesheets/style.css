@@ -1,0 +1,79 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.top-buffer { margin-top:20px; }
+
+.select2-selection{
+  height: 38px !important;
+}
+
+.cell{
+  height: 25%;
+}
+
+.bootstrap-datetimepicker-widget .datepicker-days table tbody tr:hover {
+  background-color: #eee;
+}
+
+#logo{
+  width: 30%;
+  height: auto;
+}
+
+.btn-outline-primary {
+  color: #2A3072 !important;
+  border-color: #2A3072!important;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+  color: #fff!important;
+  background-color: #2A3072!important;
+  border-color: #2A3072!important;
+}
+
+.btn-outline-primary:hover {
+  color: #fff!important;
+  background-color: #2A3072!important;
+  border-color: #2A3072!important;
+}
+
+.btn-outline-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(78,91,211,.25)!important;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #4E5BD3 !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(78,91,211,.25) !important;
+}
+
+.toggle-on.btn{
+  background-color: #4E5BD3 !important ;
+  box-shadow: 0 0 0 0.2rem rgba(78,91,211,.25) !important;
+  border-color: #4E5BD3!important;
+
+}
+
+.icon-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  border: 0;
+  background: transparent;
+}

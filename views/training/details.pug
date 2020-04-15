@@ -1,0 +1,156 @@
+extends ../layout
+
+block content
+  .container
+    .py-5.text-center
+      h2 Details #{training._id}
+  .container
+      h4.mb-3 Algemeen
+      .row
+        .col-lg.mb-3
+          p.lead Type: #{training.type}
+        .col-lg.mb-3
+          p.lead(style={color: training.color}) Kleur: #{training.color} ▉
+      .row
+        .col-lg.mb-3
+          p.lead Navigator nummer: #{training.navigatorNummer}
+      .row
+        .col-lg.mb-3
+          p.lead Aantal deelnemers: #{training.aantalDeelnemers}
+        .col-lg.mb-3
+          p.lead Aantal sessies: #{training.aantalSessies}
+
+      .row
+        .col-lg-8.mb-3
+          p.lead Eigenaar: #{training.eigenaar}
+        .col-lg-4.mb-3
+          p.lead Status: #{training.status}
+      .row
+        .col
+          p.lead Data:
+          each item in trainingen
+            -function prettyDate(dateString){
+              -var date = new Date(dateString);
+              -var d = date.getDate();
+              -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+              -var m = monthNames[date.getMonth()];
+              -var y = date.getFullYear();
+              -return d+' '+m+' '+y;
+            -}
+              p.lead #{prettyDate(item)}
+
+      hr.mb-4
+      h4.mb-3 Financieel
+      .row
+        .col-lg.mb-3
+          p.lead Budget: €#{training.budget}
+        .col-lg.mb-3.pt-2.ml-3
+          br
+          if training.offerte
+            a.icon-button.btn-lg.pr-2(type="button" href="/pdf/downloadOfferte?id=" + training._id)
+              span.fa.fa-download.mr-2(aria-hidden="true")
+            
+          input#offerte(type="checkbox" value="false" name="offerte")
+          label#offerteLabel(for="offerte") Offerte gemaakt
+        .col-lg.mb-3.pt-2.ml-3
+          br
+          if training.bestelbon
+            a.icon-button.btn-lg.pr-2(type="button" href="/pdf/downloadBestelbon?id=" + training._id)
+              span.fa.fa-download.mr-2(aria-hidden="true")
+            
+          input#bestelbon(type="checkbox" value="false" name="bestelbon")
+          label#bestelbonLabel(for="bestelbon") Bestelbon gemaakt
+        .col-lg.mb-3.pt-2.ml-3
+          br
+          if training.factuur
+            a.icon-button.btn-lg.pr-2(type="button" href="/pdf/downloadFactuur?id=" + training._id)
+              span.fa.fa-download.mr-2(aria-hidden="true")
+            
+          input#factuur(type="checkbox" value="false" name="factuur")
+          label#factuurLabel(for="factuur") Factuur gemaakt
+
+      .row
+        .col-lg.mb-3
+          p.lead EDB: #{training.edb}
+        .col-lg-4.mb-3
+          p.lead Kostenplaats: #{training.kostenplaats}
+
+      hr.mb-4
+      h4.mb-3 Subsidies
+      .row
+        .col-lg.mb-3.ml-3
+          input#subisidie(type="checkbox" value="false" name="subsidie")
+          label#subisidieLabel(for="subsidie") Gesubsidieerd?
+
+      #subsidieHiddenForm
+        .row
+          .col-lg-6.mb-3
+            p.lead Subsidie instelling: #{training.subsidieInstelling}
+          .col-lg-6.mb-3
+            p.lead Subsidie aanvraag: #{training.subsidieAanvraag}
+
+        .row
+          .col-lg-6.mb-3
+            p.lead Subsidie afhandeling: #{training.subsidieAfhandeling}
+          .col-lg-6.mb-3
+            p.lead Subsidie bedrag: € #{training.subsidieBedrag}
+      hr
+      #rest
+      h4.mb-6 Opmerkingen
+        .row
+          .col
+            p.lead.mt-3 #{training.opmerkingen}
+      hr.mb-4
+      .row
+        .col
+          a.btn.btn-outline-primary.btn-lg.btn-block(href="/training/edit?id=" + training._id) Aanpassen
+        .col
+          a.btn.btn-outline-primary.btn-lg.btn-block(href="/pdf/downloadVerslagTraining?id=" + training._id) Download
+        .col
+          button.btn.btn-outline-danger.btn-lg.btn-block(type='submit') Cancel
+      
+      br
+      br
+
+block scripts
+  script.
+    offerteCheckbox = $('#offerte')
+    bestelbonCheckbox = $('#bestelbon')
+    factuurCheckbox = $('#factuur')
+    subsidieCheckbox = $('#subisidie')
+    
+    hiddenForm = $('#subsidieHiddenForm');
+
+    offerteCheckboxLabel = $('#offerteLabel')
+    bestelbonCheckboxLabel = $('#bestelbonLabel')
+    factuurCheckboxLabel = $('#factuurLabel')
+    subsidieCheckboxLabel = $('#subisidieLabel')
+
+    hiddenForm.hide();
+    offerteCheckbox.attr("disabled","true")
+    bestelbonCheckbox.attr("disabled","true")
+    factuurCheckbox.attr("disabled","true")
+    subsidieCheckbox.attr("disabled","true")
+
+    if(!{training.offerte}){
+        offerteCheckboxLabel.addClass("active")
+        offerteCheckbox.attr("checked", "checked")
+    }
+
+    if(!{training.bestelbon}){
+        bestelbonCheckboxLabel.addClass("active")
+        offerteCheckbox.attr("checked", "checked")
+
+    }
+
+    if(!{training.subsidie}){
+        subsidieCheckboxLabel.addClass("active")
+        subsidieCheckbox.attr("checked", "checked")
+        hiddenForm.show();
+    }
+
+    if(!{training.factuur}){
+        factuurCheckboxLabel.addClass("active")
+        offerteCheckbox.attr("checked", "checked")
+    }
+

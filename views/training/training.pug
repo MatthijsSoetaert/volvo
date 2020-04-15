@@ -1,0 +1,152 @@
+extends ../layout
+
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+  .container
+    .py-5.text-center
+      h2 Trainingen 
+  form(method="post" action="/training")
+    .row#controls
+      .col-lg-2
+          .form-group
+            label.control-label(for="trainer") Trainer:
+            input.form-control#TrainingNaam(name="trainer" placeholder="Matthijs" type="text")
+      .col-lg-2
+          .form-group
+            label.control-label(for="van") Van:
+            input.form-control#vanDate(name="van" type="text" placeholder="MM/DD/YYYY" autocomplete="off")
+      .col-lg-2
+          .form-group
+            label.control-label(for="tot") Tot:
+            input.form-control#totDate(name="tot" type="text" placeholder="MM/DD/YYYY" autocomplete="off")
+      .col-lg-2
+        br
+        div.mt-2
+        .btn-group(role="group")
+            input.btn.btn-outline-primary(type="submit" value="Bevestig") 
+            button.btn.btn-outline-primary(type="button" onclick="download()") Download
+      .col-lg-3
+        br
+        .mt-2
+        .btn-group(role="group")
+            a.btn.btn-outline-primary(type="button"  href="/training/trainers") Trainers
+            a.btn.btn-outline-primary(type="button"  href="/training/subsidies") Subsidies
+            a.btn.btn-outline-primary(type="button"  href="/training/kostenplaatsen") Kostenplaastsen
+            button.btn.btn-outline-primary(type="button" onclick="openpopup()") Details
+
+      .col-lg-1
+        br
+        .text-right
+          .btn-group(aria-label="Basic example")
+            .mt-2
+                a.btn.btn-outline-primary(href="/training/add") Voeg toe
+
+      
+  .top-buffer
+  table.table
+    thead
+      tr
+        th(scope="col") Week van
+        th(scope="col") Type
+        th(scope="col") Eigenaar
+        th(scope="col") navigatorNummer
+        th(scope="col") Deelnemers
+        th(scope="col") Sessies
+    tbody#table
+      each item in trainingen
+        -function prettyDate(dateString){
+          -var date = new Date(dateString);
+          -var d = date.getDate();
+          -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+          -var m = monthNames[date.getMonth()];
+          -var y = date.getFullYear();
+          -return d+' '+m+' '+y;
+        -}
+        tr
+          if prettyDate(item.datum[0]) != "NaN undefined NaN"
+            td #{prettyDate(item.datum[0])}
+          else
+            td Geen datum
+          td #{item.type}
+          td #{item.eigenaar}
+          td #{item.navigatorNummer}
+          td #{item.aantalDeelnemers}
+          td #{item.aantalSessies}
+          td 
+            button.btn.btn-outline-primary.details-buttons(id = item._id onclick="clicked(this)") Detail
+  .modal.fade#model(tabindex='-1' role="dialog")
+    .modal-dialog(role="document")
+        .modal-content
+            .modal-header
+                h5.modal-title Details
+                button.close(type="button" data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") &times;
+            .modal-body
+                p Totale kost: #{kost}
+            .modal-footer#addNewTraining
+                button.btn.btn-secondary(type="button" data-dismiss="modal") Close
+
+block scripts
+  script.
+    function download(){
+      var van = $("#vanDate").value
+      var tot = $("#totDate").value
+
+      var link = "/pdf/downloadTrainingLijst?van=" + van + "&tot=" + tot;
+      console.log(link);
+      window.location.href = link;
+    }
+  
+
+    function clicked(button){
+      var link = "/training/detail?id=" + button.id;
+      console.log(link);
+      window.location.href = link;
+    }
+
+    function addToDate(button){
+      var link = "/training/addToDate?trainingid=" + button.id + "&plaats=!{plaats}&weekid=!{weekid}" ;
+      window.location.href = link;
+    }
+
+    function openpopup(){
+      $("#model").modal('show');
+    }
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+  script.
+    $(document).ready(function(){
+      var date_input_tot=$('input[name="van"]'); //our date input has the name "date"
+      var date_input_van=$('input[name="tot"]'); //our date input has the name "date"
+
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+          orientation: 'top auto',
+          autoclose: true,
+          todayHighlight: true
+      };
+      date_input_tot.datepicker(options);
+      date_input_van.datepicker(options);
+        
+      if(!{selection}){
+          $('#controls').hide()
+          $(".details-buttons").attr("onclick","addToDate(this)")
+          $(".details-buttons").text("Add")
+      }
+    })
+  script.
+    $('#vanDate').select2();
+    $('#totDate').select2();
+
+  script.
+    $(document).ready(function(){
+      $("#TrainingNaam").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#table tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
