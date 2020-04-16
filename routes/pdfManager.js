@@ -161,9 +161,8 @@ router.get('/downloadVerslagTraining', function (req, res, next) {
       doc.fontSize(12).text(navNr, 350, 570)
 
     }
-
+    res.contentType("application/pdf");
     doc.end()
-    res.send(res.data)
   })
 });
 
