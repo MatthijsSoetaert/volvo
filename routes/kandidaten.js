@@ -49,7 +49,6 @@ router.get('/add', function (req, res, next) {
 router.post('/add', function (req, res, next) {
   addNewKandidaat(req, res)
   //OPSLAAN EN DAN ID VAN RECORD MEEGEVEN ALS ARGUMENT
-  res.redirect("/kandidaten")
 });
 
 //DETAILS GET
@@ -188,8 +187,6 @@ function addNewKandidaat(req, res) {
   var takel = "";
   var gecertificeerd = "";
 
-  console.log(req.body.rehire)
-  console.log(req.body.reguliere)
   if (req.body.rehire == undefined) {
     rehire = false;
   } else {
@@ -284,9 +281,8 @@ function addNewKandidaat(req, res) {
       }
     });
     if (err) return console.error(err);
+    res.redirect("/kandidaten")
   })
-
-  return kandidaat
 }
 
 module.exports = router;
