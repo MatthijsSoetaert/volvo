@@ -531,6 +531,21 @@ router.post('/subsidies', function (req, res, next) {
   var van = getMonday(new Date(req.body.van));
   var tot = getMonday(new Date(req.body.tot));
 
+  var van = JSON.parse(JSON.stringify(req.body.van))
+  var tot = JSON.parse(JSON.stringify(req.body.tot))
+
+  if(van.toString() != ""){
+    van = getMonday(new Date(van))
+  }else{
+    van = null
+  }
+
+  if(tot.toString() != ""){
+    tot = getMonday(new Date(tot));
+  }else{
+    tot = null
+  }
+
   if (van == null & tot == null) {
     trainingModel.find({ "subsidie": true }).exec(function (err, list) {
       if (err) { return next(err); }
@@ -548,13 +563,15 @@ router.post('/subsidies', function (req, res, next) {
       if (err) { return next(err); }
       res.render('./training/subsidies', { trainingen: list, selection: false })
     })
+  }else{
+
+    trainingModel.find({ "datum": { "$gte": van, "$lt": tot }, "subsidie": true }).exec(function (err, list) {
+      if (err) { return next(err); }
+      var kost = berekenTotaleKost(list)
+      res.render('./training/subsidies', { trainingen: list, selection: false })
+    })
   }
 
-  trainingModel.find({ "datum": { "$gte": van, "$lt": tot }, "subsidie": true }).exec(function (err, list) {
-    if (err) { return next(err); }
-    var kost = berekenTotaleKost(list)
-    res.render('./training/subsidies', { trainingen: list, selection: false })
-  })
 });
 
 //GET

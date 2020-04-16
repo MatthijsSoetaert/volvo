@@ -31,9 +31,11 @@ router.get('/kandidatenpw', function (req, res, next) {
 //POST KANDIDATENPW
 router.post('/kandidatenpw', function (req, res, next) {
   var maandag = getMonday(req.body.week)
+  var tomorrow = new Date()
+  tomorrow.setDate(maandag.getDate() + 1)
   console.log(maandag)
 
-  kandidaatModel.find({ "datum": maandag }).exec(function (err, list) {
+  kandidaatModel.find({ "datum": { "$gte": maandag, "$lt": tomorrow } }).exec(function (err, list) {
     if (err) { return next(err); }
     console.log(list)
     res.render('./kandidaten/kandidatenpw', { kandidaten: list })
@@ -49,6 +51,7 @@ router.get('/add', function (req, res, next) {
 router.post('/add', function (req, res, next) {
   addNewKandidaat(req, res)
   //OPSLAAN EN DAN ID VAN RECORD MEEGEVEN ALS ARGUMENT
+  res.redirect("/kandidaten")
 });
 
 //DETAILS GET
@@ -187,6 +190,8 @@ function addNewKandidaat(req, res) {
   var takel = "";
   var gecertificeerd = "";
 
+  console.log(req.body.rehire)
+  console.log(req.body.reguliere)
   if (req.body.rehire == undefined) {
     rehire = false;
   } else {
@@ -279,11 +284,11 @@ function addNewKandidaat(req, res) {
           })
         }
       }
-      if (err) return console.error(err);
-      return res.redirect("/kandidaten")
     });
-
+    if (err) return console.error(err);
   })
+
+  return kandidaat
 }
 
 module.exports = router;
