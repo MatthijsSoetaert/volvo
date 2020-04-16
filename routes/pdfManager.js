@@ -109,7 +109,7 @@ router.get('/downloadVerslagTraining', function (req, res, next) {
     var type = "Budget: €" + item.budget
     doc.fontSize(12).text(type, 60, 360)
 
-    if (item.offerte) {
+    /*if (item.offerte) {
       doc.image("./public/images/Checkboxes/check-box.jpg", 60, 390, { scale: 0.02 })
     }
     else {
@@ -133,6 +133,7 @@ router.get('/downloadVerslagTraining', function (req, res, next) {
     else {
       doc.image("./public/images/Checkboxes/blank-check-box.jpg", 425, 390, { scale: 0.02 })
     }
+    */
     doc.fontSize(12).text("Factuur gemaakt", 450, 391)
 
     var type = "EDB: " + item.edb
@@ -162,7 +163,6 @@ router.get('/downloadVerslagTraining', function (req, res, next) {
     }
 
     doc.end()
-    res.send(res.data)
   })
 });
 
