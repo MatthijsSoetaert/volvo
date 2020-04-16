@@ -279,9 +279,10 @@ function addNewKandidaat(req, res) {
           })
         }
       }
+      if (err) return console.error(err);
+      return res.redirect("/kandidaten")
     });
-    if (err) return console.error(err);
-    res.redirect("/kandidaten")
+
   })
 }
 
