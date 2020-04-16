@@ -163,6 +163,7 @@ router.get('/downloadVerslagTraining', function (req, res, next) {
     }
 
     doc.end()
+    res.send(res.data)
   })
 });
 
