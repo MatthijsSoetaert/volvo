@@ -63,7 +63,7 @@ block content
         .col-lg.mb-3.pt-2.ml-3
           br
           if training.factuur
-            a.icon-button.btn-lg.pr-2(type="button" href="/pdf/downloadFactuur?id=" + training._id)
+            a.icon-button.btn-lg.pr-2(type="button" disabled="true" href="/pdf/downloadFactuur?id=" + training._id)
               span.fa.fa-download.mr-2(aria-hidden="true")
             
           input#factuur(type="checkbox" value="false" name="factuur")

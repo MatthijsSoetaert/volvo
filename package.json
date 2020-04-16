@@ -1,9 +1,6 @@
 {
   "name": "projectmobieleappsrest",
   "version": "0.0.0",
-  "engines": {
-    "node": "12.13.0"
-  },
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www"
@@ -13,7 +10,6 @@
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "bcrypt-nodejs": "0.0.3",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bootstrap-colorpicker": "^3.2.0",
     "compression": "^1.7.4",

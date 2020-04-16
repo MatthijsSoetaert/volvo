@@ -1,3 +1,5 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "appService.defaultWebAppToDeploy": "/subscriptions/07060319-2a88-4695-8d13-ef4b5acafc52/resourceGroups/VolvoDatabase/providers/Microsoft.Web/sites/VolvoDatabase",
+    "appService.deploySubpath": ""
 }
