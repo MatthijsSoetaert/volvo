@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
       console.log(tomorrow)
       let temp;
       if (list[0] == null) {
-        temp = addNewDateToDatabase(today);
+        temp = addNewDateToDatabase(today,res);
       }
       else{
         temp = list[0]
@@ -43,16 +43,16 @@ router.post('/', function (req, res, next) {
   var tomorrow = new Date(today)
   tomorrow.setDate(today.getDate() + 1)
 
-
-  weekModel.find({ "datum": today}).exec(function (err, list) {
-    let id = list[0]._id
+  console.log(today)
+  console.log(tomorrow)
+  weekModel.find({ "datum": { "$gte": today, "$lt": tomorrow } }).exec(function (err, list) {
+    var id
     if (list[0] == null) {
-      list[0] = addNewDateToDatabase(today);
-      weekModel.find({ "datum": today}).exec(function (err, list) {
-          id = list[0]._id
-      });
+      list[0] = addNewDateToDatabase(today,res);
+    }else{
+      id = list[0]._id;
+      res.redirect("/calendar?weekid="+id )
     }
-    res.redirect("/calendar?weekid="+id )
   });
 });
 
@@ -304,7 +304,7 @@ function getMonday(d) {
   return new Date(d.setDate(diff));
 }
 
-function addNewDateToDatabase(today) {
+function addNewDateToDatabase(today,res) {
   var dag = new weekModel({
     datum: today,
     lokalen: {
@@ -318,8 +318,12 @@ function addNewDateToDatabase(today) {
     }
   })
 
-  dag.save(function (err, book) {
+  dag.save(function (err, week) {
     if (err) return console.error(err);
+    //weekModel.find({ "datum": { "$gte": today, "$lt": tomorrow } }).exec(function (err, list) {
+      id = week._id
+      res.redirect("/calendar?weekid="+id )
+    //});
   })
 
   return dag
