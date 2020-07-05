@@ -31,8 +31,16 @@ block content
                 | Vul een geldig familienaam nummer in.
             .col-lg-4
               .form-group
+                -function prettyDate(dateString){
+                  -var date = new Date(dateString);
+                  -var d = date.getDate();
+                  -var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+                  -var m = date.getMonth() + 1;
+                  -var y = date.getFullYear();
+                  -return m+'/'+d+'/'+y;
+                -}
                 label.control-label(for="week") Week:
-                input.form-control#week(name="week" type="text" placeholder="MM/DD/YYYY" value=kandidaat.datum)
+                input.form-control#week(name="week" type="text" placeholder="MM/DD/YYYY" value=prettyDate(kandidaat.datum))
           hr
           .row.ml-3
             .col-lg-3.mb-3.pt-2.ml-3
@@ -52,7 +60,7 @@ block content
                 label.form-check-label#veiligheidLabel(for="veiligheid") Veiligheid geslaagd
               .row
                 .col-lg-6
-                  input#veiligheidscore.form-control(name='veiligheidscore' type='number' placeholder='8' value=kandidaat.veiligheidscore )
+                  input#veiligheidscore.form-control(name='veiligheidscore' type='number' min="0" placeholder='8' value=kandidaat.veiligheidscore )
                   .invalid-feedback
                     | Vul een geldige veiligheidscore in.
                 .col-lg-6
@@ -63,7 +71,7 @@ block content
                 label.form-check-label#ccLabel(for="cc") CC geslaagd
               .row
                 .col-lg-6
-                  input#ccscore.form-control(name='ccscore' type='number' placeholder='8' value=kandidaat.ccscore )
+                  input#ccscore.form-control(name='ccscore' type='number' min="0" placeholder='8' value=kandidaat.ccscore )
                   .invalid-feedback
                     | Vul een geldige ccscore in.
                 .col-lg-6
@@ -75,7 +83,7 @@ block content
                 label.form-check-label#takelLabel(for="takel") Takel geslaagd
               .row
                 .col-lg-6
-                  input#takelscore.form-control(name='takelscore' type='number' placeholder='8' value=kandidaat.takelscore )
+                  input#takelscore.form-control(name='takelscore' type='number' min="0" placeholder='8' value=kandidaat.takelscore )
                   .invalid-feedback
                     | Vul een geldige takelscore in.
                 .col-lg-6

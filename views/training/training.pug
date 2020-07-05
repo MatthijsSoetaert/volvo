@@ -1,8 +1,8 @@
 extends ../layout
 
 block extracss
-    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
-    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
 
 block content
   .container
@@ -22,28 +22,26 @@ block content
           .form-group
             label.control-label(for="tot") Tot:
             input.form-control#totDate(name="tot" type="text" placeholder="MM/DD/YYYY" autocomplete="off")
-      .col-lg-2
+      .col-lg-4
         br
         div.mt-2
-        .btn-group(role="group")
-            input.btn.btn-outline-primary(type="submit" value="Bevestig") 
-            button.btn.btn-outline-primary(type="button" onclick="download()") Download
-      .col-lg-3
+        .btn-group
+            button.btn.btn-outline-primary(type="submit" value="Bevestig") Bevestig
+            button.btn.btn-outline-primary.dropdown-toggle.dropdown-toggle-split(onclick="return false;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+              span.sr-only Bevestig
+            .dropdown-menu
+              button.dropdown-item(onclick="download(); return false;") Download
+      .col-lg-1.mt-2
         br
-        .mt-2
-        .btn-group(role="group")
-            a.btn.btn-outline-primary(type="button"  href="/training/trainers") Trainers
-            a.btn.btn-outline-primary(type="button"  href="/training/subsidies") Subsidies
-            a.btn.btn-outline-primary(type="button"  href="/training/kostenplaatsen") Kostenplaastsen
-            button.btn.btn-outline-primary(type="button" onclick="openpopup()") Details
-
-      .col-lg-1
+        .btn-group
+          button.btn.btn-outline-primary.dropdown-toggle(type="button" onclick="return false;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")  Extra         
+          .dropdown-menu
+            a.dropdown-item(onclick="openpopup()") Details
+            a.dropdown-item(href="/detailCards") Wijzig dropdowns
+      .col-lg-1.mt-2
         br
         .text-right
-          .btn-group(aria-label="Basic example")
-            .mt-2
-                a.btn.btn-outline-primary(href="/training/add") Voeg toe
-
+          a.btn.btn-outline-primary(href="/training/add") Voeg toe
       
   .top-buffer
   table.table
@@ -90,11 +88,14 @@ block content
                 button.btn.btn-secondary(type="button" data-dismiss="modal") Close
 
 block scripts
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
   script.
-    function download(){
-      var van = $("#vanDate").value
-      var tot = $("#totDate").value
 
+    function download(){
+      var van = $("#vanDate").val()
+      var tot = $("#totDate").val()
+      console.log(van)
       var link = "/pdf/downloadTrainingLijst?van=" + van + "&tot=" + tot;
       console.log(link);
       window.location.href = link;
@@ -115,9 +116,7 @@ block scripts
     function openpopup(){
       $("#model").modal('show');
     }
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
-  script.
+
     $(document).ready(function(){
       var date_input_tot=$('input[name="van"]'); //our date input has the name "date"
       var date_input_van=$('input[name="tot"]'); //our date input has the name "date"
@@ -137,11 +136,10 @@ block scripts
           $(".details-buttons").text("Add")
       }
     })
-  script.
+
     $('#vanDate').select2();
     $('#totDate').select2();
 
-  script.
     $(document).ready(function(){
       $("#TrainingNaam").on("keyup", function() {
         var value = $(this).val().toLowerCase();

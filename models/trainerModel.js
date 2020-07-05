@@ -6,6 +6,9 @@ var trainer = new Schema({
   naam: {
     type: String
   },
+  kleur:{
+    type: String
+  },
   trainingen: {
     type: [String]
   }

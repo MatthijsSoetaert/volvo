@@ -8,11 +8,15 @@ block content
       h4.mb-3 Algemeen
       .row
         .col-lg-3.mb-3
-          img(src='/images/profilepictures/' + kandidaat._id + "." +kandidaat.imgext style="width: 12em; height: 15em")
+          img(src='/kandidaten/getProfilePicture?id=' + kandidaat._id + "." +kandidaat.imgext style="width: 12em; height: 15em")
         .col-lg-9.mb-3
           .row
             .col-lg.mb-3
               h1 #{kandidaat.voornaam} #{kandidaat.familienaam}
+            .col-lg.mt-2
+              .text-right
+                button.btn.btn-outline-primary( id=kandidaat._id onclick="clicked(this)") Aanpassen
+          hr
           .row.ml-2
             .col-lg-3.mb-3.pt-2.ml-3
               input#werkplekleren(type="checkbox" value="false" name="werkplekleren")
@@ -89,8 +93,6 @@ block content
           p.lead #{kandidaat.eindbesluit}
       hr
       .row
-        .col
-          button.btn.btn-outline-primary.btn-lg.btn-block( id=kandidaat._id onclick="clicked(this)") Aanpassen
         .col
           button.btn.btn-outline-danger.btn-lg.btn-block#cancel Cancel
         .col

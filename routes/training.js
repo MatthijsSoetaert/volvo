@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var url = require('url');
-var fileUpload = require('express-fileupload')
 var weekModel = require('../models/weekModel')
 var trainingModel = require('../models/trainingModel')
 var trainerModel = require('../models/trainerModel')
@@ -110,8 +109,13 @@ router.get('/add', function (req, res, next) {
 
 //ADD POST
 router.post('/add', function (req, res, next) {
-  addNewTraining(req)
-  res.redirect("/training")
+  var selectDates = url.parse(req.url, true).query.selectDates;
+  addNewTraining(req,res)
+  if(selectDates == "true"){
+    res.redirect("/calendar/trainingDateSelection")
+  }else{
+    res.redirect("/training")
+  }
 });
 
 router.get('/remove', function (req, res, next) {
@@ -120,6 +124,18 @@ router.get('/remove', function (req, res, next) {
   trainingModel.find({ "_id": id }).deleteOne(function (err, trainers) {
     if (err) { return next(err); }
     res.redirect("/training")
+  })
+});
+
+router.get('/getNavigatorNumber', function (req, res, next) {
+  var type = url.parse(req.url, true).query.type
+  trainingModel.find({ "type": type }).exec(function (err, training) {
+    if (err) { return next(err); }
+    if(training.length != 0){
+      res.send(training[0].navigatorNummer)
+    }else{
+      res.send("")
+    }
   })
 });
 
@@ -388,128 +404,6 @@ function handleFiles(req, id) {
   }
 }
 
-//--------------------------TRAINERS-----------------------------------
-router.get('/trainers', function (req, res, next) {
-  //   if(req.isAuthenticated()){
-
-  trainerModel.find().exec(function (err, list) {
-    if (err) { return next(err); }
-    res.render('./training/trainers', { trainers: list })
-  })
-  //  }
-  //else{
-  //  res.redirect("/login")
-  //}
-});
-
-router.get('/addTrainer', function (req, res, next) {
-  //   if(req.isAuthenticated()){
-  res.render("./training/addTrainer")
-  //  }
-  //else{
-  //  res.redirect("/login")
-  //}
-});
-
-router.post('/addTrainer', function (req, res, next) {
-  //   if(req.isAuthenticated()){
-  addNewTrainer(req);
-  res.redirect("/training/trainers")
-  //  }
-  //else{
-  //  res.redirect("/login")
-  //}
-});
-
-router.get('/trainers/remove', function (req, res, next) {
-  //   if(req.isAuthenticated()){
-  var id = url.parse(req.url, true).query.id
-  trainerModel.find({ "_id": id }).deleteOne(function (err, list) {
-    if (err) { return next(err); }
-    res.redirect("/training/trainers")
-  })
-
-  //  }
-  //else{
-  //  res.redirect("/login")
-  //}
-});
-
-router.get('/trainers/details', function (req, res, next) {
-  var id = url.parse(req.url, true).query.id
-  var date = getMonday(new Date())
-
-  trainerModel.find({ "_id": id }).exec(function (err, trainer) {
-    if (err) { return next(err); }
-
-    trainer = trainer[0]
-    trainingModel.find({ '_id': { $in: trainer.trainingen } }).exec(function (err, trainingen) {
-      if (err) { return next(err); }
-      subsidieInstellingModel.find().exec(function (err, subsidieInstellingen) {
-        if (err) { return next(err); }
-        var trainingListWithCorrectDate = []
-
-        for (var i = 0; i < trainingen.length; i++) {
-          var trainingDate = new Date(trainingen[i].datum);
-          if (trainingDate.getDay() == date.getDay() && trainingDate.getMonth() == date.getMonth() && trainingDate.getFullYear() == date.getFullYear()) {
-            trainingListWithCorrectDate.push(trainingen[i])
-          }
-        }
-        res.render("./training/trainerDetails", { trainer: trainer, trainingen: trainingListWithCorrectDate, subsidieInstellingen: subsidieInstellingen })
-      })
-    });
-  })
-});
-
-router.post('/trainers/details', function (req, res, next) {
-  var id = url.parse(req.url, true).query.id
-  var date = getMonday(new Date(req.body.trainer))
-
-  trainerModel.find({ "_id": id }).exec(function (err, trainer) {
-    if (err) { return next(err); }
-    trainer = trainer[0]
-    trainingModel.find({ '_id': { $in: trainer.trainingen } }).exec(function (err, trainingen) {
-      var trainingListWithCorrectDate = []
-      console.log("tes")
-      for (var i = 0; i < trainingen.length; i++) {
-        var trainingDate = new Date(trainingen[i].datum);
-        if (trainingDate.getDate() == date.getDate() && trainingDate.getMonth() == date.getMonth() && trainingDate.getFullYear() == date.getFullYear()) {
-          trainingListWithCorrectDate.push(trainingen[i])
-        }
-      }
-      res.render("./training/trainerDetails", { trainer: trainer, trainingen: trainingListWithCorrectDate })
-    });
-  })
-});
-
-router.get('/trainers/edit', function (req, res, next) {
-  //   if(req.isAuthenticated()){
-  var id = url.parse(req.url, true).query.id
-  trainerModel.find({ "_id": id }).exec(function (err, list) {
-    if (err) { return next(err); }
-    res.redirect("/training/trainers")
-  })
-
-  //  }
-  //else{
-  //  res.redirect("/login")
-  //}
-});
-
-
-function addNewTrainer(res) {
-
-  var trainer = new trainerModel({
-    naam: res.body.naam
-  })
-
-  trainer.save(function (err, trainer) {
-    if (err) return console.error(err);
-    console.log(trainer) + " opgeslagen"
-  })
-  return trainer
-}
-
 function getMonday(d) {
   d = new Date(d);
   console.log(d);
@@ -517,90 +411,8 @@ function getMonday(d) {
     diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
   return new Date(d.setDate(diff));
 }
-//--------------------------SUBSIDIES-----------------------------------
-//GET
-router.get('/subsidies', function (req, res, next) {
-  trainingModel.find({ "subsidie": true }).exec(function (err, list) {
-    if (err) { return next(err); }
-    res.render('./training/subsidies', { trainingen: list })
-  })
-});
 
-//POST
-router.post('/subsidies', function (req, res, next) {
-  var van = getMonday(new Date(req.body.van));
-  var tot = getMonday(new Date(req.body.tot));
-
-  if (van == null & tot == null) {
-    trainingModel.find({ "subsidie": true }).exec(function (err, list) {
-      if (err) { return next(err); }
-      res.render('./training/subsidies', { trainingen: list, selection: false })
-    })
-  }
-  else if (van == null) {
-    trainingModel.find({ "datum": { "$lt": tot }, "subsidie": true }).exec(function (err, list) {
-      if (err) { return next(err); }
-      res.render('./training/subsidies', { trainingen: list, selection: false })
-    })
-  }
-  else if (tot == null) {
-    trainingModel.find({ "datum": { "$gte": van }, "subsidie": true }).exec(function (err, list) {
-      if (err) { return next(err); }
-      res.render('./training/subsidies', { trainingen: list, selection: false })
-    })
-  }
-
-  trainingModel.find({ "datum": { "$gte": van, "$lt": tot }, "subsidie": true }).exec(function (err, list) {
-    if (err) { return next(err); }
-    var kost = berekenTotaleKost(list)
-    res.render('./training/subsidies', { trainingen: list, selection: false })
-  })
-});
-
-//GET
-router.get('/subsidies/subsidieInstellingen', function (req, res, next) {
-  subsidieInstellingModel.find({}).exec(function (err, list) {
-    if (err) { return next(err); }
-    res.render('./training/subsidieInstelling', { instellingen: list })
-  })
-});
-
-//ADD SUBSIDIEINSTELLING
-router.post('/subsidies/instelling/toevoegen', function (req, res, next) {
-  //   if(req.isAuthenticated()){
-  console.log(req.body.instelling)
-  var subsidieInstelling = new subsidieInstellingModel({
-    naam: req.body.instelling
-  })
-
-  subsidieInstelling.save(function (err, training) {
-    console.log(training)
-    if (err) return console.error(err);
-    res.redirect("/training/subsidies/subsidieInstellingen")
-  })
-  //  }
-  //else{
-  //  res.redirect("/login")
-  //}
-});
-
-//REMOVE SUBSIDIEINSTELLING
-router.get('/subsidies/instelling/verwijderen', function (req, res, next) {
-  //   if(req.isAuthenticated()){
-  var id = url.parse(req.url, true).query.id
-  subsidieInstellingModel.find({ "_id": id }).remove(function (err, list) {
-    if (err) { return next(err); }
-    res.redirect("/training/subsidies/subsidieInstellingen")
-
-  })
-
-  //  }
-  //else{
-  //  res.redirect("/login")
-  //}
-});
-
-//--------------------------SUBSIDIES-----------------------------------
+//--------------------------Kostenplaats-----------------------------------
 
 //GET
 router.get('/kostenplaatsen', function (req, res, next) {

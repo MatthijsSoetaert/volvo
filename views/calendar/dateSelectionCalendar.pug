@@ -1,0 +1,420 @@
+
+extends ../layout
+block extracss
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
+block content
+    .container
+        .py-3.text-center
+            h1#weeknumberfield Kalender week #{weeknumber}
+        .row
+            .col-lg-4
+                .form-group
+                    label.control-label(for="date") Week van:
+                    input.form-control#date(name="date" placeholder="MM/DD/YYYY" type="text" autocomplete="off")
+            .col-lg-4.mt-2
+                br
+                button.btn.btn-outline-primary#selectDateButton( onclick="getNewData()") Bevestig
+    .row
+        .col.border.bg-light
+            p.font-weight-bold.text-center Lokaal
+        .col.border.bg-light
+            p.font-weight-bold.text-center Datum
+        .col.border.bg-light
+            p.font-weight-bold.text-center Maandag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Dinsdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Woensdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Donderdag
+        .col.border.bg-light
+            p.font-weight-bold.text-center Vrijdag
+    .row.text-center
+        .col.border.bg-light TC1
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_2_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_3_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_4_TC1(onclick="toggleInList(this)") 
+        .col.border.bg-light
+            .row.border.bg-light.cell#di_1_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_2_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_3_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_4_TC1(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_2_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_3_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_4_TC1(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_2_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_3_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_4_TC1(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_2_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_3_TC1(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_4_TC1(onclick="toggleInList(this)") 
+    .row.text-center
+        .col.border.bg-light TC2
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_2_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_3_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_4_TC2(onclick="toggleInList(this)")
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_2_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_3_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_4_TC2(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_2_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_3_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_4_TC2(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_2_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_3_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_4_TC2(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_2_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_3_TC2(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_4_TC2(onclick="toggleInList(this)") 
+    .row.text-center
+        .col.border.bg-light TC3
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_2_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_3_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_4_TC3(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_2_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_3_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_4_TC3(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_2_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_3_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_4_TC3(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC3(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#do_2_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_3_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_4_TC3(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_2_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_3_TC3(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_4_TC3(onclick="toggleInList(this)") 
+    .row.text-center
+        .col.border.bg-light TC4
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_2_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_3_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_4_TC4(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_2_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_3_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_4_TC4(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_2_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_3_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_4_TC4(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_2_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_3_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_4_TC4(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_2_TC4(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#vr_3_TC4(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_4_TC4(onclick="toggleInList(this)") 
+    .row.text-center
+        .col.border.bg-light TC7
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_2_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_3_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_4_TC7(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_2_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_3_TC7(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#di_4_TC7(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_2_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_3_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_4_TC7(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TC7(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#do_2_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_3_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_4_TC7(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_2_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_3_TC7(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_4_TC7(onclick="toggleInList(this)") 
+    .row.text-center
+        .col.border.bg-light TC Hal
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_2_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_3_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_4_TCHAL(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_2_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_3_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_4_TCHAL(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_2_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_3_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_4_TCHAL(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_2_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_3_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_4_TCHAL(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_2_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_3_TCHAL(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_4_TCHAL(onclick="toggleInList(this)") 
+    .row.text-center
+        .col.border.bg-light Extern
+        .col.border.bg-light
+            .row.border.bg-light 8u-12u
+            .row.border.bg-light 10u-12u
+            .row.border.bg-light 12u-14u
+            .row.border.bg-light 14u-16u
+        .col.border.bg-light 
+            .row.border.bg-light.cell#ma_1_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_2_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#ma_3_TCEXTERN(onclick="toggleInList(this)")
+            .row.border.bg-ligh.cellt#ma_4_TCEXTERN(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#di_1_TCEXTERN(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#di_2_TCEXTERN(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#di_3_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#di_4_TCEXTERN(onclick="toggleInList(this)")
+        .col.border.bg-light 
+            .row.border.bg-light.cell#woe_1_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_2_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_3_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#woe_4_TCEXTERN(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#do_1_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_2_TCEXTERN(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#do_3_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#do_4_TCEXTERN(onclick="toggleInList(this)") 
+        .col.border.bg-light 
+            .row.border.bg-light.cell#vr_1_TCEXTERN(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#vr_2_TCEXTERN(onclick="toggleInList(this)") 
+            .row.border.bg-light.cell#vr_3_TCEXTERN(onclick="toggleInList(this)")
+            .row.border.bg-light.cell#vr_4_TCEXTERN(onclick="toggleInList(this)") 
+    br
+    input#hiddenInfoField( type="hidden")
+    h3 Gekozen data
+    table.table#selectedDatesTable
+        thead
+            tr
+                th(scope="col") Week van
+                th(scope="col") Weeknummer
+                th(scope="col") Weekdag
+                th(scope="col") Lokaal
+                th(scope="col") Blok
+                th(scope="col") Verwijderen
+        tbody#table
+
+block scripts
+    script(src="https://code.jquery.com/jquery-3.3.1.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+
+    script.
+        $(document).ready(function(){
+            var date_input=$('input[name="date"]'); //our date input has the name "date"
+            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+            var options={
+                orientation: 'top auto',
+                autoclose: true,
+                todayHighlight: true
+            };
+            date_input.datepicker(options);
+            var trainingen = !{trainingen}
+            $("#hiddenInfoField").attr("week",prettyDate("!{weekdatum}"))
+            fillFields(trainingen)
+        })
+        $('#classroom').select2();
+
+        function prettyDate(dateString){
+            var date = new Date(dateString);
+            var d = date.getDate();
+            var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];     
+            var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            var m = monthNames[date.getMonth()];
+            var y = date.getFullYear();
+            return d+' '+m+' '+y;
+        }
+
+        function toggleInList(item){
+            if(item.textContent == "" || item.textContent ==" "){
+                addToList(item)
+            }
+            else if(item.textContent == "GESELECTEERD"){
+                $("#row_" + item.id).remove()
+                console.log("row_"+item.id)
+                let colorstring = "background-color: " +  "#FFFFFF" + ' !important'
+                $("#" + item.id).attr('style', colorstring);
+                $("#" + item.id).text("")
+            }
+        }
+
+        function removeEntry(element){
+            parts = element.id.split("-")
+            $("#row-" + parts[1] ).remove()
+            let colorstring = "background-color: " +  "#FFFFFF" + ' !important'
+            $("#" + parts[1]).attr('style', colorstring);
+            $("#" + parts[1]).text("")
+        }
+
+        function addToList(item){
+            mergeCells(item)
+            var s = "<tr id=row-" +item.id+ ">"
+            s += "<td>"+ $("#hiddenInfoField").attr("week") +"</td>"
+            s += "<td>" + $("#weeknumberfield").text().split(" ")[2] +"</td>"
+            s += "<td>"+ item.id.split("_")[0] +"</td>"
+            s += "<td>"+ item.id.split("_")[2] +"</td>"
+            s += "<td>"+ item.id.split("_")[1] +"</td>"
+
+            s += "<td><button class=\"btn btn-outline-danger\" id=\"delete-"+ item.id + "\" onclick=\"removeEntry(this)\">Verwijder</button></td>"
+            s = s + "</tr>"
+
+            let colorstring = "background-color: " +  "#AAAAAA" + ' !important'
+            $("#" + item.id).attr('style', colorstring);
+            $("#" + item.id).text("GESELECTEERD")
+            $("#selectedDatesTable").find('tbody').append(s);
+        }
+
+        function mergeCells(item){
+                parts = item.id.split("_")
+                refdag = parts[0]
+                refblok = parts[1]
+                reflokaal = parts[2]
+
+                $('#table  > tr').each(function(index, tr) { 
+                    parts = tr.id.split("-")[1].split("_")
+                    dag = $(tr).children().eq(2).text();
+                    blok = $(tr).children().eq(4).text();
+                    blokken = blok.split("-")
+
+                    checklist = []
+                    if(blokken.length == 1){
+                        checklist.append(blok)
+                    }
+                    else if(blokken.length == 2){
+                        checklist.append(blokken[0])
+                        checklist.append(blokken[1])
+
+                    }
+
+                    lokaal = $(tr).children().eq(3).text();
+
+                    dif = parseInt(Math.abs(parseInt(blok) - parseInt(refblok)))
+                    if(dag == refdag && reflokaal == lokaal && dif == 1){
+                        console.log("GELIJK")
+                    }
+                });
+            }
+
+        function getNewData(){
+            term = $("#date").val(),
+            console.log(term)
+            // Send the data using post
+            $.post( "/calendar/trainingenData", { date: term },function(data, status, xhr) { 
+                console.log(data.trainingen)
+                emptyall()
+                fillFields(JSON.parse(data.trainingen))
+                console.log(data.weeknumber)
+                $("#weeknumberfield").text("Kalender week " + data.weeknumber)
+                $("#hiddenInfoField").attr("week",prettyDate(data.weekdatum))
+            },
+            'json')            
+        }
+
+      
+        function emptyall(){
+            lokalen = ["TC1","TC2","TC3","TC4","TC7","TCHAL","TCEXTERN"]
+            dagen=["ma","di","woe","vr","za"]
+            momenten=["1","2","3","4"]
+
+            lokalen.forEach(lokaal => {
+                dagen.forEach(dag =>{
+                    momenten.forEach(moment =>
+                    {    let id = dag + "_" + moment + "_" + lokaal
+                        $("#"+id).text("")
+                        $("#"+id).attr('style', "")}
+                    )
+                })
+            })
+        }
+        function fillFields(trainingen){
+            var counter = 0
+            trainingen.forEach(myFunction);
+
+            function myFunction(training) {
+                training.locs.forEach(function(i){
+                    let id = "#" + i
+                    $(id).text(training.type);
+                    $(id).attr("listLoc", counter);
+                    let colorstring = "background-color: " +  training.color + ' !important'
+                    $(id).attr('style', colorstring);
+
+                })
+            counter++
+            }
+        }
+

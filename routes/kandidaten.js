@@ -5,6 +5,24 @@ var mongoose = require('mongoose');
 var url = require('url');
 const Jimp = require("jimp")
 
+var fs = require('fs')
+const {
+  BlobServiceClient,
+  StorageSharedKeyCredential,
+  newPipeline
+} = require('@azure/storage-blob');
+var azure = require('azure');
+var blobs = azure.createBlobService();
+
+const sharedKeyCredential = new StorageSharedKeyCredential(
+  "storagevolvoaccount",
+  "qugar2WbsESRrcpZqS6GNPNl48PnwJXWZL2mw24o5d1FWlC8Vb5KXRi/8cFZaucX/cKPKZp0ubOF9zc2Z+lstA==");
+const pipeline = newPipeline(sharedKeyCredential);
+
+const blobServiceClient = new BlobServiceClient(
+  `https://storagevolvoaccount.blob.core.windows.net`,
+  pipeline
+);
 var kandidaatModel = require('../models/kandidaatModel')
 
 /* GET home page. */
@@ -18,8 +36,8 @@ router.get('/', function (req, res, next) {
 //GET KANDIDATENPW
 router.get('/kandidatenpw', function (req, res, next) {
   var maandag = getMonday(new Date())
-  maandag.setDate(maandag.getDate()-1);
-  maandag.setHours(24,00,00,000)
+  maandag.setDate(maandag.getDate() - 1);
+  maandag.setHours(24, 00, 00, 000)
   console.log(maandag)
   kandidaatModel.find({ "datum": maandag }).exec(function (err, list) {
     if (err) { return next(err); }
@@ -31,9 +49,11 @@ router.get('/kandidatenpw', function (req, res, next) {
 //POST KANDIDATENPW
 router.post('/kandidatenpw', function (req, res, next) {
   var maandag = getMonday(req.body.week)
+  var tomorrow = new Date()
+  tomorrow.setDate(maandag.getDate() + 1)
   console.log(maandag)
 
-  kandidaatModel.find({ "datum": maandag }).exec(function (err, list) {
+  kandidaatModel.find({ "datum": { "$gte": maandag, "$lt": tomorrow } }).exec(function (err, list) {
     if (err) { return next(err); }
     console.log(list)
     res.render('./kandidaten/kandidatenpw', { kandidaten: list })
@@ -46,7 +66,7 @@ router.get('/add', function (req, res, next) {
 });
 
 //ADD POST
-router.post('/add', function (req, res, next) {
+router.post('/add', async function (req, res, next) {
   addNewKandidaat(req, res)
   //OPSLAAN EN DAN ID VAN RECORD MEEGEVEN ALS ARGUMENT
   res.redirect("/kandidaten")
@@ -60,6 +80,56 @@ router.get('/detail', function (req, res, next) {
     res.render('./kandidaten/details', { kandidaat: list[0] })
   })
 });
+
+async function streamToString(readableStream) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    readableStream.on("data", (data) => {
+      chunks.push(data.toString());
+    });
+    readableStream.on("end", () => {
+      resolve(chunks.join(""));
+    });
+    readableStream.on("error", reject);
+  });
+}
+
+router.get('/getProfilePicture', async function (req, res, next) {
+  var id = url.parse(req.url, true).query.id
+ /* var downloaded = ""
+  try{
+    const containerClient = await blobServiceClient.getContainerClient("profilepictures");
+    const blobClient = await containerClient.getBlobClient(id);
+    // Download and convert a blob to a string
+    downloadBlockBlobResponse = await blobClient.download();
+    await streamToString(downloadBlockBlobResponse.readableStreamBody).then(function(downloaded){
+      var bitmap = new Buffer.from(downloaded,'base64');
+      res.writeHead(200,{
+        'Content-Type': 'image/png',
+        'Content-Length': bitmap.length
+      })
+      var s = fs.createReadStream(downloaded);
+      s.pipe(downloaded)
+    });
+  }catch(err){
+    console.log(err)
+  }
+  */
+ var blobs = azure.createBlobService();
+ try{
+  var tempUrl = blobs.getBlobUrl('profilepictures', id,  { AccessPolicy: {
+    Start: Date.now(),
+    Expiry: azure.date.minutesFromNow(60),
+    Permissions: azure.Constants.BlobConstants.SharedAccessPermissions.READ
+  }});
+  res.send(tempUrl)
+ }
+ catch(err){
+   console.log(err)
+ }
+
+});
+
 
 //EDIT GET
 router.get('/edit', function (req, res, next) {
@@ -179,7 +249,7 @@ function updateKandidaat(req) {
   return kandidaat
 }
 
-function addNewKandidaat(req, res) {
+async function addNewKandidaat(req, res) {
   var rehire = "";
   var reguliere = "";
   var werkplekleren = "";
@@ -234,8 +304,8 @@ function addNewKandidaat(req, res) {
   }
 
   profilePicture = req.files.profilePicture
-
   var ext = profilePicture.name.split(".")[1]
+
   var maandag = getMonday(req.body.week)
   var kandidaat = new kandidaatModel({
     datum: maandag,
@@ -262,28 +332,29 @@ function addNewKandidaat(req, res) {
 
   })
 
-  kandidaat.save(function (err, kandidaat) {
-
-    //EXTRA EXTENSIES TOEVOEGEN
-    let picturePath = "./public/images/profilePictures/" + kandidaat.id + "."
-
-    profilePicture.mv(picturePath + ext, function (err) {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      else {
-        if (ext == "png") {
-          Jimp.read(picturePath + "png", function (err, image) {
-            if (err) {
-              console.log(err)
-            } else {
-              image.write(picturePath + "jpg")
-            }
-          })
-        }
-      }
-    });
+  kandidaat.save(async function (err, kandidaat) {
     if (err) return console.error(err);
+
+    const containerClient = blobServiceClient.getContainerClient("profilepictures")
+    const blockBlobClient = containerClient.getBlockBlobClient(kandidaat._id + "." + ext)
+
+    // Upload data to the blob
+    const data = profilePicture;
+    console.log(data)
+    const uploadBlobResponse = await blockBlobClient.upload(data.data, data.data.length);
+    console.log("Blob was uploaded successfully. requestId: ", uploadBlobResponse.requestId);
+
+
+    /*if (ext == "png") {
+      Jimp.read(picturePath + "png", function (err, image) {
+        if (err) {
+          console.log(err)
+        } else {
+          image.write(picturePath + "jpg")
+        }
+      })
+    }*/
+
   })
 
   return kandidaat

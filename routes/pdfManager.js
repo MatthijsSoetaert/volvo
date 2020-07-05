@@ -3,6 +3,21 @@ var router = express.Router();
 var PDFDocument = require('pdfkit');
 var url = require('url');
 var PdfTable = require('voilab-pdf-table');
+const {
+  BlobServiceClient,
+  StorageSharedKeyCredential,
+  newPipeline
+} = require('@azure/storage-blob');
+
+const sharedKeyCredential = new StorageSharedKeyCredential(
+  "storagevolvoaccount",
+  "qugar2WbsESRrcpZqS6GNPNl48PnwJXWZL2mw24o5d1FWlC8Vb5KXRi/8cFZaucX/cKPKZp0ubOF9zc2Z+lstA==");
+const pipeline = newPipeline(sharedKeyCredential);
+
+const blobServiceClient = new BlobServiceClient(
+  `https://storagevolvoaccount.blob.core.windows.net`,
+  pipeline
+);
 
 var kandidaatModel = require('../models/kandidaatModel')
 var trainingModel = require('../models/trainingModel')
@@ -67,8 +82,25 @@ router.get('/downloadVerslagKandidaat', function (req, res, next) {
   })
 });
 
-router.get('/downloadVerslagTraining', function (req, res, next) {
+async function streamToString(readableStream) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    readableStream.on("data", (data) => {
+      chunks.push(data.toString());
+    });
+    readableStream.on("end", () => {
+      resolve(chunks.join(""));
+    });
+    readableStream.on("error", reject);
+  });
+}
+
+router.get('/downloadVerslagTraining', async function (req, res, next) {
   var id = url.parse(req.url, true).query.id
+
+  const containerClient = blobServiceClient.getContainerClient("staticcontent");
+  const blobClient = await containerClient.getBlobClient("blank-check-box.jpg");
+  const downloadBlockBlobResponse = await blobClient.downloadToBuffer(image_checked);
 
   trainingModel.findOne({ "_id": id }).exec(function (err, item) {
     if (err) { return next(err); }
@@ -110,10 +142,10 @@ router.get('/downloadVerslagTraining', function (req, res, next) {
     doc.fontSize(12).text(type, 60, 360)
 
     if (item.offerte) {
-      doc.image("./public/images/Checkboxes/check-box.jpg", 60, 390, { scale: 0.02 })
+      doc.image("./public/blank-check-box.jpg", 60, 390, { scale: 0.02 })
     }
     else {
-      doc.image("./public/images/Checkboxes/blank-check-box.jpg", 60, 390, { scale: 0.02 })
+      doc.image("./public/blank-check-box.jpg", 60, 390, { scale: 0.02 })
     }
     doc.fontSize(12).text("Offerte gemaakt", 85, 391)
 
@@ -162,8 +194,8 @@ router.get('/downloadVerslagTraining', function (req, res, next) {
     }
 
     doc.end()
-    res.send(res.data)
-  })
+    res.contentType("application/pdf");
+    })
 });
 
 router.get('/downloadKandidaatLijst', function (req, res, next) {

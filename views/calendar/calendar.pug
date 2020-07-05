@@ -7,7 +7,7 @@ block extracss
 block content
     .container
         .py-3.text-center
-            h1 Kalender
+            h1 Kalender week #{weeknumber}
     form(method="post" action="/calendar")
         .row
             .col-lg-4
@@ -232,10 +232,10 @@ block content
             .row.border.bg-light 12u-14u
             .row.border.bg-light 14u-16u
         .col.border.bg-light 
-            .row.border.bg-light.cell#ma_1_TC1(onclick="openpopup(this)") 
-            .row.border.bg-light.cell#ma_2_TC1(onclick="openpopup(this)") 
-            .row.border.bg-light.cell#ma_3_TC1(onclick="openpopup(this)")
-            .row.border.bg-ligh.cellt#ma_4_TC1(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_1_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_2_TCEXTERN(onclick="openpopup(this)") 
+            .row.border.bg-light.cell#ma_3_TCEXTERN(onclick="openpopup(this)")
+            .row.border.bg-ligh.cellt#ma_4_TCEXTERN(onclick="openpopup(this)") 
         .col.border.bg-light 
             .row.border.bg-light.cell#di_1_TCEXTERN(onclick="openpopup(this)")
             .row.border.bg-light.cell#di_2_TCEXTERN(onclick="openpopup(this)")
@@ -256,6 +256,11 @@ block content
             .row.border.bg-light.cell#vr_2_TCEXTERN(onclick="openpopup(this)") 
             .row.border.bg-light.cell#vr_3_TCEXTERN(onclick="openpopup(this)")
             .row.border.bg-light.cell#vr_4_TCEXTERN(onclick="openpopup(this)") 
+    .row
+        .col
+            hr
+            a.btn.btn-outline-primary.btn-lg.btn-block#dataSelecteren(href="/") Home
+
 
     .modal.fade#model(tabindex='-1' role="dialog")
         .modal-dialog(role="document")
@@ -279,6 +284,7 @@ block content
                     button.btn.btn-outline-danger#removeButton(type="button" onclick="removeOnDate()") Verwijder
                     button.btn.btn-outline-primary#navigateToDetailsButton(type="button" onclick="navigateToDetails()") Details
                     button.btn.btn-outline-secondary(type="button" data-dismiss="modal") Close
+    
 
 block scripts
     script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
@@ -293,6 +299,8 @@ block scripts
                 todayHighlight: true
             };
             date_input.datepicker(options);
+            fillFields()
+
         })
 
         $('#classroom').select2();
@@ -329,7 +337,6 @@ block scripts
                 $("#modelId").text("id " + !{trainingen}[locnr].id)
                 $("#opmerkingen").text("Opmerkingen: " + !{trainingen}[locnr].opmerkingen)
                 $("#navigateToDetailsButton").attr("d",!{trainingen}[locnr].id)
-
             }
         }
 
@@ -355,21 +362,23 @@ block scripts
             window.location.href = link;
         }
 
-        var counter = 0
-        var trainingen = !{trainingen}
-        trainingen.forEach(myFunction);
+        function fillFields(){
+            var counter = 0
+            var trainingen = !{trainingen}
+            trainingen.forEach(myFunction);
 
-        function myFunction(training) {
-            training.locs.forEach(function(i){
-                let id = "#" + i
-                $(id).text(training.type);
-                $(id).attr("listLoc", counter);
-                let colorstring = "background-color: " +  training.color + ' !important'
-                $(id).attr('style', colorstring);
-            })
-            counter++
-
+            function myFunction(training) {
+                training.locs.forEach(function(i){
+                    let id = "#" + i
+                    $(id).text(training.type);
+                    $(id).attr("listLoc", counter);
+                    let colorstring = "background-color: " +  training.color + ' !important'
+                    $(id).attr('style', colorstring);
+                })
+                counter++
+            }
         }
+
 
 
 

@@ -1,14 +1,13 @@
 extends ../layout
 
 block extracss
-    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css')
 
 block content
   .container
     .py-5.text-center
       h2 Aanvraag Training Toevoegen
   .container
-    form(method='post' action='/training/add' encType="multipart/form-data")
+    form#addForm(method='post' action='/training/add' encType="multipart/form-data")
       h4.mb-3 Algemeen
       .row
         .col-lg-9.mb-3
@@ -18,9 +17,8 @@ block content
           .invalid-feedback
             | Vul een geldig type in.
         .col-lg-3.mb-3
-          label(for='color')
-            |Kleur:
-          input#color.form-control(name='color' type='text'  value='' autocomplete="off")
+          br
+          a.mt-2.btn.btn-outline-primary#autofillNavNumber Vul navigatornr aan
       .row
         .col-lg.mb-3
           label(for='navigatorNr')
@@ -32,16 +30,15 @@ block content
         .col-lg.mb-3
           label(for='aantalDeelnemers')
             |Aantal deelnemers:
-          input#aantalDeelnemers.form-control(name='aantalDeelnemers' type='number' placeholder='8' value='' )
+          input#aantalDeelnemers.form-control(name='aantalDeelnemers' type='number' min="0" placeholder='8' value='' )
           .invalid-feedback
             | Vul een geldige aantal deelnemers in.
         .col-lg.mb-3
           label(for='aantalSessies')
             |Aantal sessies:
-          input#aantalSessies.form-control(name='aantalSessies' type='number' placeholder='4' value='' )
+          input#aantalSessies.form-control(name='aantalSessies' type='number' min="0" placeholder='4' value='' )
           .invalid-feedback
             | Vul een geldige aantal sessies in.
-
       .row
         .col-lg-8.mb-3
           label(for='eigenaar')
@@ -68,8 +65,8 @@ block content
           .input-group
             .input-group-prepend
               span.input-group-text €
-            input#budget.form-control(name='budget' type='number' placeholder='8' value='' )
-          
+            input#budget.form-control(name='budget' type='number' min="0" placeholder='8' value='' )
+
             .invalid-feedback
               | Vul een geldige budget in.
       .row
@@ -152,14 +149,14 @@ block content
               <option>Wachtend</option>
               <option>Einde</option>
           .col-lg-6.mb-3
-              label(for='subsidieBedrag')
-                |Subsidie bedrag:
-              .input-group
-                .input-group-prepend
-                  span.input-group-text €
-                input#subsidieBedrag.form-control(name='subsidieBedrag' type='number' placeholder='8' value='' )
-                .invalid-feedback
-                  | Vul een geldige subsidie bedrag in.
+            label(for='subsidieBedrag')
+              |Subsidie bedrag:
+            .input-group
+              .input-group-prepend
+                span.input-group-text €
+              input#subsidieBedrag.form-control(name='subsidieBedrag' type='number' min="0" placeholder='8' value='' )
+              .invalid-feedback
+                | Vul een geldige subsidie bedrag in.
       hr
       .row
         .col-lg-2.mb-3
@@ -172,12 +169,14 @@ block content
         .col
           a.btn.btn-outline-danger.btn-lg.btn-block(href="/training") Cancel
         .col
-          button.btn.btn-outline-primary.btn-lg.btn-block#dataSelecteren(type='submit') Bevestig
+          input.btn.btn-outline-primary.btn-lg.btn-block#geenDataSelecteren( value=" Bevestig en terug" onclick ="dataSelecterenAction(false)")
+        .col
+          input.btn.btn-outline-primary.btn-lg.btn-block#dataSelecteren( value="Bevestig en data selecteren" onclick="dataSelecterenAction(true)")
       br
       br
 
 block scripts
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js")
+  script(src="https://code.jquery.com/jquery-3.1.1.min.js")
 
   script.
     offerteCheckbox = $('#offerte')
@@ -189,6 +188,7 @@ block scripts
     $("#uploadBestelbon").hide()
     $("#uploadOfferte").hide()
     $("#uploadFactuur").hide()
+
     subsidieCheckbox.on('click', function() {
       if($(this).is(':checked')) {
         this.value= "true"
@@ -201,36 +201,47 @@ block scripts
     });
 
     offerteCheckbox.on('click', function() {
-      if($(this).is(':checked')) {
-        $("#uploadOfferte").show()
-        this.value= "true"
-      } else {
-        $("#uploadOfferte").hide()
-        this.value= "false"
-      }
+      showUploadFields("#uploadOfferte",this)
     });
 
     bestelbonCheckbox.on('click', function() {
-      if($(this).is(':checked')) {
-        $("#uploadBestelbon").show()
-        this.value= "true"
-      } else {
-        $("#uploadBestelbon").hide()
-        this.value= "false"
-      }
+      showUploadFields("#uploadBestelbon",this)
     });
 
     factuurCheckbox.on('click', function() {
-      if($(this).is(':checked')) {
-        $("#uploadFactuur").show()
-        this.value= "true"
-      } else {
-        $("#uploadFactuur").hide()
-        this.value= "false"
-      }
+      showUploadFields("#uploadFactuur",this)
     });
+
+    function showUploadFields(id,item){
+      if($(item).is(':checked')) {
+        $(id).show()
+        item.value= "true"
+      } else {
+        $(id).hide()
+        item.value= "false"
+      }
+    }
+
+    function dataSelecterenAction(action){
+      $("#addForm").attr("action","/training/add?selectDates="+action)
+      $("#addForm").submit()
+    }
+
+
   script.
     $(function () {
       $('#color').colorpicker();
+    });
+
+    $("#autofillNavNumber").click(function(){
+      var url ="/training/getNavigatorNumber?type=" + $("#type").val()
+      console.log(url)
+      $.get(url, function(data, status){
+        if(data != ""){
+          $("#navigatorNr").attr("value",data)
+        }else{
+          alert("Geen bijhorend navigatornummer gevonden")
+        }
+      });
     });
 

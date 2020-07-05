@@ -2,13 +2,14 @@ extends ../layout
 block extracss
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css')
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css')
 
 block content
   .container
     .py-5.text-center
       h2 Details trainer: #{trainer.naam}
   .container
-  form(method="post" action="/training/trainers/details?id=" + trainer._id)
+  form(method="post" action="/trainers/details?id=" + trainer._id)
     .row
       .col-lg-4
           .form-group
@@ -17,6 +18,10 @@ block content
       .col-lg-1.mt-2
         br
         input.btn.btn-outline-primary(type="submit" value="Submit") 
+  br
+  .text-right
+    button.btn.btn-outline-primary(onclick="openpopup()") Trainer wijzigen
+  br
   .top-buffer
   table.table
     thead
@@ -32,17 +37,40 @@ block content
           td #{item.aantalDeelnemers}
           td #{item.aantalSessies}
           td #{item.navigatorNummer}
-
           td 
             button.btn.btn-outline-primary(id = item._id  onclick="details(this)") Details
+
+  .modal.fade#model(tabindex='-1' role="dialog")
+    .modal-dialog(role="document")
+        .modal-content
+          form(method="post" action="/trainers/edit?id=" + trainer._id)
+            .modal-header
+                h5.modal-title Trainer toevoegen
+                button.close(type="button" data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") &times;
+            .modal-body
+              .form-group
+                p Naam: #{trainer.naam}
+                label(for='kleur')
+                  |Kleur:
+                input#color.form-control(name='kleur' type='text'  value='${trainer.kleur}' autocomplete="off")
+            .modal-footer
+              button.btn.btn-outline-secondary(type="button" data-dismiss="modal") Close
+              input.btn.btn-outline-primary(type="submit" value="Submit") 
+
 block scripts
   script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js")
   script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js")
+
   script.
     function details(button){
       var link = "/training/detail?id=" + button.id;
       console.log(link);
       window.location.href = link;
+    }
+    function openpopup(){
+      $("#model").modal('show');
     }
   script.
     $(document).ready(function(){
@@ -53,9 +81,13 @@ block scripts
           autoclose: true,
           todayHighlight: true
       };
-
       date_input_tot.datepicker(options);
-
     })
+  
   script.
     $('#Date').select2();
+  
+  script.
+    $(function () {
+      $('#color').colorpicker();
+    });

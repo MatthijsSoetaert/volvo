@@ -1,6 +1,5 @@
 extends ../layout
 block extracss
-    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css')
 
 block content
   .container
@@ -18,10 +17,6 @@ block content
           input#type.form-control(name='type' type='text' placeholder='Lassen' value=training.type )
           .invalid-feedback
             | Vul een geldig type in.
-        .col-lg-3.mb-3
-          label(for='color')
-            |Kleur:
-          input#color.form-control(name='color' type='text'  value=training.color autocomplete="off")
       .row
         .col-lg.mb-3
           label(for='navigatorNr')
@@ -33,13 +28,13 @@ block content
         .col-lg.mb-3
           label(for='aantalDeelnemers')
             |Aantal deelnemers:
-          input#aantalDeelnemers.form-control(name='aantalDeelnemers' type='number' placeholder='8' value=training.aantalDeelnemers )
+          input#aantalDeelnemers.form-control(name='aantalDeelnemers' type='number'  min="0" placeholder='8' value=training.aantalDeelnemers )
           .invalid-feedback
             | Vul een geldige aantal deelnemers in.
         .col-lg.mb-3
           label(for='aantalSessies')
             |Aantal sessies:
-          input#aantalSessies.form-control(name='aantalSessies' type='number' placeholder='Lassen' value=training.aantalSessies )
+          input#aantalSessies.form-control(name='aantalSessies' type='number'  min="0" placeholder='Lassen' value=training.aantalSessies )
           .invalid-feedback
             | Vul een geldige aantal sessies in.
 
@@ -69,7 +64,7 @@ block content
           .input-group
             .input-group-prepend
               span.input-group-text €
-            input#budget.form-control(name='budget' type='number' placeholder='8' value=training.budget )
+            input#budget.form-control(name='budget' type='number'  min="0" placeholder='8' value=training.budget )
           
             .invalid-feedback
               | Vul een geldige budget in.
@@ -159,7 +154,7 @@ block content
               .input-group
                 .input-group-prepend
                   span.input-group-text €
-                input#subsidieBedrag.form-control(name='subsidieBedrag' type='number' placeholder='8' value=training.subsidieBedrag )
+                input#subsidieBedrag.form-control(name='subsidieBedrag' type='number'  min="0" placeholder='8' value=training.subsidieBedrag )
                 .invalid-feedback
                   | Vul een geldige subsidie bedrag in.
       hr
@@ -182,7 +177,6 @@ block content
       br
 
 block scripts
-  script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js")
   script.
     switch("!{training.subsidieAfhandeling}") { 
       case "Niet gestart" : $("#subsidieAfhandelingNietGestart").attr("selected","selected");break;   
